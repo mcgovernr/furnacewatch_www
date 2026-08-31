@@ -293,6 +293,15 @@ Delete: `StatBar`, `TestimonialCard`, `FeatureCard`, `CTASection` (replace), aud
 
 ## 6. Phased plan
 
+> **Status (2026-08-30):** Phases 0–3 are **shipped** — claims stripped, single audience,
+> design system v2 (Archivo, self-hosted fonts, mono eyebrows, charcoal bands), and the
+> full v2 IA (`/how-it-works`, `/what-it-catches`, `/for-service-companies`, `/company`,
+> `/demo`) live at www.furnacewatch.io with redirects from the old routes. The homepage
+> follows the signed-off comp (artifact "FurnaceWatch Homepage v2"). Remaining: Phase 4
+> (CI/CD on GitHub Actions; Formspree + Plausible accounts are the user's to create;
+> apex→www 301 needs a CloudFront Function), Phase 5 content, real portal screenshots
+> and a product render to replace the illustrations, and Search Console submission.
+
 ### Phase 0 — Stop the bleeding (≈1 day, ship this week)
 - Remove every claim in the §1.2 register; remove testimonials, logos, stats strips.
 - Remove the audience toggle and all `data-for="owner"` blocks.
