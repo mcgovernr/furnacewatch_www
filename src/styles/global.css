@@ -1,20 +1,22 @@
-/* ── Fonts ───────────────────────────────────────────────────────────
-   Space Grotesk (display) + DM Sans (body) + JetBrains Mono (code)
-   Loaded via Google Fonts CDN in BaseLayout.astro.
+/* ── FurnaceWatch design system v2 ───────────────────────────────────
+   Archivo (display) + DM Sans (body) + JetBrains Mono (data labels),
+   self-hosted (see fonts.css). Light paper surfaces, charcoal bands,
+   ember accent. Spec: docs/REDESIGN_PLAN.md §4.
 ──────────────────────────────────────────────────────────────────── */
+
+@import './fonts.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── Base Resets ─────────────────────────────────────────────────── */
+/* ── Base ────────────────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
   }
 
   html {
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -23,135 +25,107 @@
   body {
     @apply bg-white font-body;
     color: #5a5752;  /* navy-600 — warm medium gray on white */
-    font-size: 1rem;
-    line-height: 1.65;
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.6;
   }
 
-  /* Heading defaults */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-semibold;
+    @apply font-display font-bold;
     color: #141311;  /* navy-900 — warm near-black */
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
   }
 
-  /* Anchor defaults for prose */
   a {
-    @apply text-heat-600 underline-offset-2 transition-colors duration-200;
+    @apply text-heat-600 underline-offset-2 transition-colors duration-150;
   }
   a:hover {
-    @apply text-heat-500;
+    @apply text-heat-700;
   }
 
-  /* Code */
   code:not([class]) {
     @apply bg-navy-100 text-heat-700 px-1.5 py-0.5 rounded text-[0.875em] font-mono;
   }
 
-  /* Scrollbar (Webkit) */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-navy-100;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-navy-300 rounded-full;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-navy-400;
-  }
-
-  /* Focus ring */
   :focus-visible {
     @apply outline-none ring-2 ring-heat-500 ring-offset-2 ring-offset-white;
   }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
 }
 
-/* ── Component Layer ─────────────────────────────────────────────── */
+/* ── Components ──────────────────────────────────────────────────── */
 @layer components {
 
   /* ── Buttons ── */
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-md font-semibold
-           transition-all duration-150 cursor-pointer select-none;
+           transition-colors duration-150 cursor-pointer select-none no-underline;
     @apply focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
     letter-spacing: 0.01em;
   }
 
   .btn-primary {
-    @apply btn bg-heat-500 text-white hover:bg-heat-400 active:bg-heat-600
+    @apply btn bg-heat-500 text-white hover:bg-heat-600 hover:text-white active:bg-heat-700
            focus-visible:ring-heat-500;
     padding: 0.6875rem 1.5rem;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.4), 0 0 0 1px rgba(232,93,16,0.3);
-  }
-  .btn-primary:hover {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.4), 0 0 0 1px rgba(244,115,58,0.4), 0 4px 16px -4px rgba(232,93,16,0.35);
   }
 
   .btn-secondary {
     @apply btn bg-white text-navy-700 border border-navy-300
-           hover:bg-navy-50 hover:border-navy-400 focus-visible:ring-navy-400;
+           hover:bg-navy-50 hover:border-navy-400 hover:text-navy-900 focus-visible:ring-navy-400;
     padding: 0.6875rem 1.5rem;
   }
 
-  /* Secondary button for use inside dark sections */
+  /* Secondary button for charcoal bands */
   .btn-secondary-dark {
     @apply btn bg-navy-800 text-[#edeae5] border border-navy-700
-           hover:bg-navy-700 hover:border-navy-600 focus-visible:ring-navy-500;
+           hover:bg-navy-700 hover:border-navy-600 hover:text-white focus-visible:ring-navy-500;
     padding: 0.6875rem 1.5rem;
-  }
-
-  .btn-outline {
-    @apply btn border border-heat-500/60 text-heat-400
-           hover:bg-heat-500/10 hover:border-heat-400 focus-visible:ring-heat-500;
-    padding: 0.6875rem 1.4375rem;
-  }
-
-  .btn-ghost {
-    @apply btn text-navy-500 hover:text-navy-900 hover:bg-navy-100 focus-visible:ring-navy-400;
-    padding: 0.6875rem 1rem;
-  }
-
-  .btn-ghost-dark {
-    @apply btn text-navy-400 hover:text-white hover:bg-navy-800 focus-visible:ring-navy-500;
-    padding: 0.6875rem 1rem;
   }
 
   .btn-sm {
-    @apply text-sm rounded;
-    padding: 0.4375rem 1rem;
+    @apply text-sm rounded-md;
+    padding: 0.4375rem 1.125rem;
   }
 
   .btn-lg {
     @apply text-lg;
-    padding: 0.875rem 2rem;
+    padding: 0.875rem 1.75rem;
   }
 
   /* ── Cards ── */
   .card {
-    @apply bg-white border border-navy-200 rounded-lg shadow-card
-           transition-all duration-200;
+    @apply bg-white border border-navy-200 shadow-card transition-all duration-200;
+    border-radius: 10px;
   }
 
   .card-hover {
-    @apply card hover:border-navy-300 hover:shadow-card-hover hover:-translate-y-px;
+    @apply card hover:border-navy-300 hover:shadow-card-hover;
   }
 
-  /* Card variant for dark section backgrounds */
+  .card-alt {
+    @apply bg-navy-50 border border-navy-200 transition-all duration-200;
+    border-radius: 10px;
+  }
+
+  /* Card for charcoal bands */
   .card-dark {
-    @apply bg-navy-800 border border-navy-700 rounded-lg shadow-card transition-all duration-200;
+    @apply bg-navy-800 border border-navy-700;
+    border-radius: 10px;
   }
 
-  /* ── Section containers ── */
+  /* ── Layout ── */
   .container-fw {
-    @apply mx-auto px-4 sm:px-6 lg:px-8;
-    max-width: 1280px;
+    @apply mx-auto px-5 sm:px-8 lg:px-12;
+    max-width: 1240px;
   }
 
   .section {
-    @apply py-20 lg:py-28;
+    @apply py-16 lg:py-24;
   }
 
   .section-sm {
@@ -160,60 +134,53 @@
 
   /* ── Section headings ── */
   .section-eyebrow {
-    @apply inline-flex items-center gap-2 text-heat-600 text-xs font-semibold
-           uppercase tracking-[0.12em];
+    @apply inline-flex items-center font-mono text-heat-600 text-xs font-medium
+           uppercase tracking-[0.1em];
+  }
+
+  .section-eyebrow-dark {
+    @apply inline-flex items-center font-mono text-heat-400 text-xs font-medium
+           uppercase tracking-[0.1em];
   }
 
   .section-title {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-display font-semibold;
-    color: #141311;  /* navy-900 — warm near-black */
-    letter-spacing: -0.03em;
+    @apply text-3xl sm:text-4xl font-display font-bold;
+    color: #141311;
+    letter-spacing: -0.015em;
   }
 
-  /* Section title override for dark backgrounds */
   .section-title-light {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-display font-semibold;
+    @apply text-3xl sm:text-4xl font-display font-bold;
     color: #edeae5;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.015em;
   }
 
   .section-subtitle {
-    @apply text-lg sm:text-xl leading-relaxed;
-    color: #78756f;  /* navy-500 — readable on white */
+    @apply text-lg leading-relaxed;
+    color: #78756f;
   }
 
   .section-subtitle-light {
-    @apply text-lg sm:text-xl leading-relaxed;
-    color: #9a948e;  /* lighter for dark backgrounds */
-  }
-
-  /* ── Feature icon wrapper ── */
-  /* Thin-bordered square — more precise than the bubbly rounded icon box */
-  .feature-icon {
-    @apply w-9 h-9 rounded flex items-center justify-center;
-    color: #e85d10;
-    background: rgba(232, 93, 16, 0.08);
-    border: 1px solid rgba(232, 93, 16, 0.18);
+    @apply text-lg leading-relaxed;
+    color: #a8a5a0;
   }
 
   /* ── Navigation ── */
   .nav-link {
-    @apply text-sm font-medium transition-colors duration-150;
-    color: #78756f;  /* navy-500 */
+    @apply text-sm font-medium transition-colors duration-150 no-underline;
+    color: #5a5752;
   }
   .nav-link:hover {
-    color: #141311;  /* navy-900 */
+    color: #141311;
   }
 
-  /* ── Badge ── */
+  /* ── Badges ── */
   .badge {
-    @apply inline-flex items-center gap-1.5 text-xs font-semibold
-           px-2.5 py-0.5 rounded;
+    @apply inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-0.5 rounded;
   }
   .badge-heat {
-    @apply badge;
-    background: rgba(232, 93, 16, 0.12);
-    color: #f4733a;
+    @apply badge text-heat-700;
+    background: rgba(232, 93, 16, 0.10);
     border: 1px solid rgba(232, 93, 16, 0.22);
   }
   .badge-navy {
@@ -226,18 +193,11 @@
     border: 1px solid rgba(34, 197, 94, 0.22);
   }
 
-  /* ── Dividers ── */
   .divider {
     @apply border-navy-200;
   }
 
-  /* ── Gradient text ── */
-  .gradient-text {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #e85d10 0%, #f4733a 55%, #f9a870 100%);
-  }
-
-  /* ── Code blocks (used in docs/blog) ── */
+  /* ── Long-form prose (blog, docs, legal) ── */
   .prose-fw {
     @apply prose max-w-none;
     @apply prose-headings:font-display prose-headings:tracking-tight prose-headings:text-navy-900;
@@ -249,41 +209,3 @@
     @apply prose-th:text-navy-700 prose-td:text-navy-600;
   }
 }
-
-/* ── Utility Layer ───────────────────────────────────────────────── */
-@layer utilities {
-  /* Noise texture overlay — subtle texture on dark backgrounds */
-  .noise-overlay {
-    position: relative;
-  }
-  .noise-overlay::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Glow line — accent horizontal rule */
-  .glow-line {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(232,93,16,0.5) 30%, rgba(244,115,58,0.6) 50%, rgba(232,93,16,0.5) 70%, transparent);
-  }
-
-  /* Animate reveal on scroll — used with Intersection Observer */
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: none;
-  }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
-}
-

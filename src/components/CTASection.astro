@@ -1,5 +1,5 @@
 ---
-// CTASection.astro — Reusable conversion band (charcoal) used at the bottom of pages
+// CTASection.astro — Reusable conversion band (charcoal) at the bottom of pages
 
 export interface Props {
   title?: string;
@@ -13,19 +13,19 @@ export interface Props {
 const {
   title = 'See FurnaceWatch in action',
   subtitle = 'Book a 30-minute demo — the sensor, the portal, and the alerts, live.',
-  primaryLabel = 'Request a demo',
-  primaryHref = '/contact',
+  primaryLabel = 'Book a demo',
+  primaryHref = '/demo',
   secondaryLabel = 'Sign in',
   secondaryHref = (import.meta.env.PUBLIC_APP_URL || 'https://app.furnacewatch.io') + '/login',
 } = Astro.props;
 ---
 
-<section class="bg-navy-950 border-t border-navy-800">
-  <div class="container-fw section-sm">
-    <div class="max-w-3xl mx-auto text-center space-y-6">
+<section class="bg-navy-900 border-t border-navy-800">
+  <div class="container-fw py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto text-center flex flex-col items-center gap-5">
       <h2 class="section-title-light">{title}</h2>
       <p class="section-subtitle-light">{subtitle}</p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-2">
         <a href={primaryHref} class="btn btn-primary btn-lg w-full sm:w-auto">
           {primaryLabel}
         </a>

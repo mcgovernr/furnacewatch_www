@@ -1,112 +1,105 @@
 ---
-// src/pages/index.astro — Landing page
-// Audience: HVAC service companies only (see docs/REDESIGN_PLAN.md).
-// Every claim on this page must be backed by the register in REDESIGN_PLAN.md §1.2.
+// src/pages/index.astro — Homepage (design system v2, per the signed-off comp)
+// Claims governed by docs/BRAND_COPY.md v2 + docs/REDESIGN_PLAN.md §1.2.
 
 import PageLayout from '@layouts/PageLayout.astro';
 import CTASection from '@components/CTASection.astro';
+import { failureModes, severityDot } from '../data/failureModes';
 
-// Illustrative product UI — generic unit labels, no real or invented customers.
+const homeModes = failureModes.filter(m => m.name !== 'Extended run');
+
+const problems = [
+  { title: 'The customer finds out first.', body: 'The thermostat says heating. The house is 58°. Your first sign of trouble is a phone call at 6 AM — often in a cold snap, when every truck is already booked.' },
+  { title: 'The truck rolls blind.', body: 'No-heat call, no diagnosis. The tech starts troubleshooting in the driveway — and the right part may be back at the shop.' },
+  { title: 'The agreement renews on faith.', body: 'Your maintenance agreement promises attention. Between visits, nobody is actually watching the furnace.' },
+];
+
+const steps = [
+  { n: '01', title: 'Your tech installs it', body: 'One maintenance visit: mount on the cabinet, power from the furnace’s 24V transformer, sense the heat call from the thermostat wires.' },
+  { n: '02', title: 'It watches every cycle', body: 'Heat call, inducer, ignition, blower — around the clock, with detection running on the sensor itself.' },
+  { n: '03', title: 'It names the failure', body: 'Not an error light. “Heat call with no ignition.” “Igniter failure.” “Short cycling.”' },
+  { n: '04', title: 'Your office knows first', body: 'A push alert with the failure mode and timeline, before the customer notices a cold house.' },
+];
+
 const fleet = [
-  { name: 'Furnace 01', note: 'Heating — cycle normal',            status: 'ok' },
-  { name: 'Furnace 04', note: 'Idle — last cycle 7:12 AM',         status: 'ok' },
-  { name: 'Furnace 07', note: 'Heat call with no ignition',        status: 'critical' },
-  { name: 'Furnace 09', note: 'Short cycling — 9 cycles this hour', status: 'warn' },
-  { name: 'Furnace 12', note: 'Sensor offline — 2 h',              status: 'warn' },
-  { name: 'Furnace 15', note: 'Heating — cycle normal',            status: 'ok' },
+  { name: 'Furnace 01', note: 'Heating — cycle normal',             dot: 'bg-healthy' },
+  { name: 'Furnace 04', note: 'Idle — last cycle 7:12 AM',          dot: 'bg-healthy' },
+  { name: 'Furnace 07', note: 'Heat call with no ignition',         dot: 'bg-critical-dark' },
+  { name: 'Furnace 09', note: 'Short cycling — 9 cycles this hour', dot: 'bg-warn-dark' },
+  { name: 'Furnace 12', note: 'Sensor offline — 2 h',               dot: 'bg-navy-400' },
+  { name: 'Furnace 15', note: 'Heating — cycle normal',             dot: 'bg-healthy' },
 ];
-
-const failureModes = [
-  { name: 'Heat call with no ignition', desc: 'The thermostat is calling for heat and the furnace has not fired. The exact no-heat scenario — caught before the customer notices a cold house.' },
-  { name: 'Igniter failure', desc: 'The ignition sequence ran and the burner did not light.' },
-  { name: 'Flame sensor failure', desc: 'The burner lit and dropped out early, cycle after cycle.' },
-  { name: 'Pressure switch / rollout trip', desc: 'The inducer ran and ignition was never attempted.' },
-  { name: 'Short cycling', desc: 'The furnace is starting and stopping without completing normal cycles.' },
-  { name: 'Sensor offline', desc: 'The sensor stopped reporting — flagged so the unit is never silently unwatched.' },
-];
-
-function dotColor(s: string) {
-  if (s === 'critical') return 'bg-red-500';
-  if (s === 'warn') return 'bg-amber-500';
-  return 'bg-emerald-600';
-}
 ---
 
 <PageLayout
   title="FurnaceWatch — Remote Furnace Diagnostics"
-  description="A furnace-mounted diagnostic sensor and fleet portal for HVAC service companies. Know the moment a furnace fails — and what failed — before the customer calls."
+  description="A furnace-mounted diagnostic sensor and fleet portal for HVAC service companies. Know what failed before the customer calls."
 >
 
-  <!-- ── HERO ─────────────────────────────────────────────────────── -->
-  <section class="relative bg-white overflow-hidden">
-    <div class="absolute top-0 right-0 w-[55%] h-full pointer-events-none bg-gradient-to-bl from-orange-50 via-amber-50/40 to-transparent" aria-hidden="true"></div>
-
-    <div class="container-fw relative">
-      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-16 lg:py-24">
-
-        <!-- Copy -->
-        <div>
-          <span class="section-eyebrow mb-6 inline-flex">Remote furnace diagnostics for service companies</span>
-          <h1 class="font-display text-4xl sm:text-5xl lg:text-[56px] font-bold text-navy-900 leading-[1.05] tracking-tight mb-6">
-            Know the moment<br />the furnace fails.
+  <!-- ═══ HERO ═══ -->
+  <section class="bg-white">
+    <div class="container-fw">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-14 lg:py-20">
+        <div class="flex flex-col items-start gap-6">
+          <span class="section-eyebrow">Remote furnace diagnostics · For service companies</span>
+          <h1 class="font-display font-bold text-4xl sm:text-5xl lg:text-[54px] leading-[1.06] tracking-tight text-navy-900">
+            Know what failed before the customer calls.
           </h1>
-          <p class="text-xl text-navy-500 leading-relaxed mb-8 max-w-[520px]">
-            FurnaceWatch mounts on the furnace and watches every heating cycle — the heat call,
-            the inducer, the ignition, the blower. When something fails, your team knows what
-            happened before the customer calls.
+          <p class="text-lg text-navy-500 leading-relaxed max-w-[520px]">
+            FurnaceWatch is a furnace-mounted sensor and fleet portal built for HVAC service
+            companies. It senses the heat call, follows the inducer, ignition, and blower through
+            every cycle — and the moment a cycle goes wrong, your office gets the failure by name.
           </p>
-          <div class="flex flex-col sm:flex-row gap-3 mb-6">
-            <a href="/contact" class="btn btn-primary btn-lg">
-              Request a demo
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-            </a>
-            <a href="/features" class="btn btn-secondary btn-lg">See how it works</a>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="/demo" class="btn btn-primary btn-lg">Book a demo</a>
+            <a href="/how-it-works" class="btn btn-secondary btn-lg">See how it works</a>
           </div>
-          <p class="text-sm text-navy-400 mb-8">Now enrolling early design partners for this heating season.</p>
-          <div class="flex flex-wrap items-center gap-x-6 gap-y-2 pt-6 border-t border-navy-200">
-            {[
-              'Detection runs on the sensor',
-              'Installed by your technician',
-              'Customers see only their furnace',
-            ].map(t => (
-              <span class="flex items-center gap-1.5 text-sm text-navy-500">
-                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                {t}
-              </span>
-            ))}
-          </div>
+          <p class="text-sm text-navy-400">Enrolling a small number of design partners for this heating season.</p>
         </div>
 
         <!-- Alert mock (illustrative product UI) -->
-        <div class="relative">
-          <div class="rounded-xl overflow-hidden border border-navy-200" style="box-shadow:0 24px 80px -16px rgba(0,0,0,0.16),0 4px 16px -4px rgba(0,0,0,0.08);">
-            <div class="bg-navy-950 px-4 py-2.5 flex items-center justify-between">
-              <span class="text-xs text-navy-400 font-mono">FurnaceWatch · Furnace 07</span>
-              <span class="text-xs text-navy-500">Today, 5:43 AM</span>
+        <div class="relative lg:pb-8">
+          <div class="rounded-xl overflow-hidden border border-navy-200 shadow-mock max-w-[480px]">
+            <div class="bg-navy-900 px-4 py-2.5 flex items-center justify-between">
+              <span class="font-mono text-[11px] text-navy-400">FurnaceWatch · Furnace 07</span>
+              <span class="font-mono text-[11px] text-navy-500">Today, 5:43 AM</span>
             </div>
-            <div class="bg-navy-900 p-5 space-y-3">
+            <div class="bg-[#1d1c19] px-5 py-4">
               {[
-                { label: 'Heat call',  value: 'Active since 5:42 AM', cls: 'text-amber-400' },
-                { label: 'Inducer',    value: 'Not detected',          cls: 'text-red-400' },
-                { label: 'Ignition',   value: 'Not detected',          cls: 'text-red-400' },
-                { label: 'Blower',     value: 'Idle',                  cls: 'text-navy-400' },
+                { label: 'Heat call', value: 'Active since 5:42 AM', cls: 'text-warn-dark' },
+                { label: 'Inducer',   value: 'Not detected',          cls: 'text-critical-dark' },
+                { label: 'Ignition',  value: 'Not detected',          cls: 'text-critical-dark' },
+                { label: 'Blower',    value: 'Idle',                  cls: 'text-navy-400' },
               ].map(r => (
-                <div class="flex items-center justify-between border-b border-navy-800 pb-3 last:border-0 last:pb-0">
+                <div class="flex items-center justify-between py-2.5 border-b border-navy-800 last:border-0">
                   <span class="text-sm text-navy-300">{r.label}</span>
-                  <span class:list={['text-sm font-mono', r.cls]}>{r.value}</span>
+                  <span class:list={['font-mono text-[13px]', r.cls]}>{r.value}</span>
                 </div>
               ))}
-              <div class="mt-4 flex items-start gap-3 rounded-lg bg-red-500/10 border border-red-500/20 px-3 py-3">
-                <div class="w-2 h-2 rounded-full bg-red-500 shrink-0 mt-1.5"></div>
-                <div class="flex-1">
-                  <p class="text-sm font-semibold text-red-400">Heat call with no ignition</p>
-                  <p class="text-xs text-navy-400 mt-0.5">Thermostat has been calling since 5:42 AM. The furnace has not fired.</p>
+              <div class="mt-3 flex items-start gap-3 rounded-lg bg-danger/10 border border-danger/25 px-3.5 py-3">
+                <span class="w-2 h-2 rounded-full bg-danger shrink-0 mt-1.5"></span>
+                <div>
+                  <p class="text-sm font-semibold text-critical-dark">Heat call with no ignition</p>
+                  <p class="text-xs text-navy-400 mt-0.5 leading-relaxed">Thermostat has been calling since 5:42 AM. The furnace has not fired.</p>
                 </div>
               </div>
             </div>
-            <div class="bg-navy-950 px-5 py-3 flex items-center justify-between">
+            <div class="bg-navy-900 px-5 py-3 flex items-center justify-between">
               <span class="text-xs text-navy-500">Watching around the clock</span>
-              <span class="text-xs text-emerald-400 font-medium">Push alert sent · 5:43 AM</span>
+              <span class="text-xs text-healthy-dark font-medium">Push alert sent · 5:43 AM</span>
+            </div>
+          </div>
+          <!-- Phone push card -->
+          <div class="hidden sm:flex absolute -bottom-2 right-0 lg:-right-2 w-[300px] rounded-xl bg-white border border-navy-200 shadow-card-hover px-4 py-3.5 gap-3 items-start">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0 mt-0.5">
+              <path d="M16 2C16 2 10 9 10 16a6 6 0 0012 0c0-3-1.5-5-3-6.5C18 12 17 14 17 16a1 1 0 01-2 0c0-4 1-8 1-14z" fill="#e85d10"/>
+            </svg>
+            <div class="min-w-0">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[13px] font-semibold text-navy-900">FurnaceWatch</span>
+                <span class="text-[11px] text-navy-400">now</span>
+              </div>
+              <p class="text-[13px] text-navy-600 leading-snug mt-0.5">Heat call with no ignition — Furnace 07. Calling since 5:42 AM, not fired.</p>
             </div>
           </div>
         </div>
@@ -114,128 +107,204 @@ function dotColor(s: string) {
     </div>
   </section>
 
-  <!-- ── THE PROBLEM ──────────────────────────────────────────────── -->
-  <section class="bg-navy-50 border-y border-navy-200 py-16 lg:py-20">
-    <div class="container-fw">
-      <div class="grid md:grid-cols-3 gap-6">
-        {[
-          { title: 'The customer finds out first.', body: 'The thermostat says heating. The house is 58°. Your first sign of trouble is a phone call — often at 6 AM, often in a cold snap when every truck is already booked.' },
-          { title: 'The truck rolls blind.', body: 'No-heat call, no diagnosis. The tech starts troubleshooting in the driveway, and the right part may be back at the shop.' },
-          { title: 'The agreement renews on faith.', body: 'Your maintenance agreement promises attention. Between visits, nobody — including you — is actually watching the furnace.' },
-        ].map(p => (
-          <div class="card p-7 space-y-3">
-            <h3 class="text-lg font-semibold text-navy-900">{p.title}</h3>
-            <p class="text-navy-500 text-sm leading-relaxed">{p.body}</p>
+  <!-- ═══ THE PROBLEM ═══ -->
+  <section class="bg-navy-100 border-y border-navy-200">
+    <div class="container-fw py-14 lg:py-16">
+      <div class="grid md:grid-cols-3 gap-10">
+        {problems.map(p => (
+          <div class="flex flex-col gap-2.5 border-t-2 border-navy-300 pt-4">
+            <h3 class="font-display font-bold text-xl text-navy-900">{p.title}</h3>
+            <p class="text-[15px] text-navy-500 leading-relaxed">{p.body}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- ── HOW IT WORKS ─────────────────────────────────────────────── -->
+  <!-- ═══ HOW IT WORKS ═══ -->
   <section class="section bg-white">
-    <div class="container-fw">
-      <div class="max-w-2xl mb-14">
+    <div class="container-fw flex flex-col gap-12">
+      <div class="flex flex-col gap-4 max-w-2xl">
         <span class="section-eyebrow">How it works</span>
-        <h2 class="section-title mt-4">Installed by your tech.<br />Watched by your office.</h2>
+        <h2 class="section-title">Installed by your tech. Watched by your office.</h2>
       </div>
-      <div class="grid md:grid-cols-3 gap-6">
-        {[
-          { step: '1', title: 'Your technician installs it', desc: 'During a normal maintenance visit: the sensor mounts to the furnace cabinet, powers from the furnace’s own 24V transformer, and senses the heat call from the thermostat wires. No batteries, no wall wart.' },
-          { step: '2', title: 'It watches every cycle', desc: 'Heat call, inducer, ignition, blower — the sensor follows the whole sequence, around the clock. Detection runs on the sensor itself, so it keeps watching even when the home’s Wi-Fi drops.' },
-          { step: '3', title: 'Your office knows first', desc: 'When a cycle goes wrong, the failure gets a name and your team gets a push notification. The portal shows every furnace under agreement in one list.' },
-        ].map(s => (
-          <div class="card p-8 space-y-4">
-            <span class="font-display text-2xl font-bold text-heat-600">{s.step}</span>
-            <h3 class="text-xl font-semibold text-navy-900">{s.title}</h3>
-            <p class="text-navy-500 text-sm leading-relaxed">{s.desc}</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {steps.map(s => (
+          <div class="card-alt p-6 flex flex-col gap-3">
+            <span class="font-display font-extrabold text-[15px] text-heat-600">{s.n}</span>
+            <h3 class="font-display font-bold text-lg text-navy-900">{s.title}</h3>
+            <p class="text-sm text-navy-500 leading-relaxed">{s.body}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- ── WHAT IT CATCHES ──────────────────────────────────────────── -->
-  <section class="section bg-navy-50 border-y border-navy-200">
-    <div class="container-fw">
-      <div class="max-w-2xl mb-14">
+  <!-- ═══ WHAT IT CATCHES ═══ -->
+  <section class="section bg-navy-50 border-t border-navy-200">
+    <div class="container-fw flex flex-col gap-11">
+      <div class="flex flex-col gap-4 max-w-2xl">
         <span class="section-eyebrow">What it catches</span>
-        <h2 class="section-title mt-4">Failures get names,<br />not guesses.</h2>
-        <p class="section-subtitle mt-4">
-          FurnaceWatch does state-based diagnosis: it knows what a normal heating cycle looks like,
-          and when a cycle goes wrong it tells you which way. Not a prediction — a diagnosis, the
-          moment it happens.
+        <h2 class="section-title">Failures get names, not guesses.</h2>
+        <p class="section-subtitle">
+          State-based diagnosis: FurnaceWatch knows what a normal heating cycle looks like, and when
+          a cycle goes wrong it tells you which way. Not a prediction — a diagnosis, the moment it
+          happens.
         </p>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {failureModes.map(f => (
-          <div class="card p-6 space-y-3">
-            <h3 class="text-base font-semibold text-navy-900">{f.name}</h3>
-            <p class="text-navy-500 text-sm leading-relaxed">{f.desc}</p>
+        {homeModes.map(m => (
+          <div class="card p-6 flex flex-col gap-2.5">
+            <div class="flex items-center gap-2.5">
+              <span class:list={['w-2 h-2 rounded-full shrink-0', severityDot[m.severity]]}></span>
+              <h3 class="font-display font-bold text-base text-navy-900">{m.name}</h3>
+            </div>
+            <p class="text-sm text-navy-500 leading-relaxed">{m.summary}</p>
           </div>
         ))}
+      </div>
+      <div>
+        <a href="/what-it-catches" class="btn btn-secondary">All failure modes, with what the alert says</a>
       </div>
     </div>
   </section>
 
-  <!-- ── FLEET ────────────────────────────────────────────────────── -->
-  <section class="section bg-white">
-    <div class="container-fw">
-      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-        <div class="space-y-6">
-          <span class="section-eyebrow">Fleet view</span>
-          <h2 class="section-title">Every furnace under agreement. One list.</h2>
-          <ul class="space-y-4">
+  <!-- ═══ DISPATCH (charcoal band) ═══ -->
+  <section class="bg-navy-900">
+    <div class="container-fw py-16 lg:py-24">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="flex flex-col items-start gap-5">
+          <span class="section-eyebrow-dark">The payoff</span>
+          <h2 class="section-title-light">Dispatch with the diagnosis.</h2>
+          <p class="section-subtitle-light max-w-md">
+            The dispatcher sees the failure mode and the timeline before assigning the truck.
+            The technician walks in already knowing the failure mode — right tech, right parts,
+            one visit.
+          </p>
+          <ul class="flex flex-col gap-3 mt-1">
             {[
-              'Live status for every monitored furnace — no site visit to know what’s running',
-              'Two health scores per unit: the furnace and the sensor watching it',
-              'Push notifications to your team’s phones, naming the failure mode',
-              'Cycle history per furnace, so the tech arrives with context',
+              'Every monitored furnace in one list, with health scores',
+              'Cycle history per furnace, for context before the truck rolls',
+              'Customers log in and see only their own equipment',
             ].map(item => (
               <li class="flex items-start gap-3">
-                <svg class="w-5 h-5 text-heat-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                <span class="text-navy-600 text-sm leading-relaxed">{item}</span>
+                <svg class="w-4 h-4 text-heat-400 shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-sm text-navy-300 leading-relaxed">{item}</span>
               </li>
             ))}
           </ul>
-          <p class="text-navy-500 text-sm leading-relaxed max-w-md">
-            Your customers get a login too — homeowners and property managers see only their own
-            equipment, under your company's service.
-          </p>
         </div>
 
-        <!-- Fleet list mock (illustrative product UI) -->
-        <div class="rounded-xl overflow-hidden border border-navy-200" style="box-shadow:0 20px 60px -16px rgba(0,0,0,0.12),0 4px 16px -4px rgba(0,0,0,0.07);">
-          <div class="bg-white border-b border-navy-200 px-5 py-3.5 flex items-center justify-between">
-            <span class="text-sm font-semibold text-navy-900">Monitored furnaces</span>
-            <span class="text-xs text-navy-400">Updated just now</span>
+        <!-- Fleet list (illustration of the portal's fleet view) -->
+        <div class="flex flex-col gap-2.5">
+          <div class="rounded-xl overflow-hidden border border-navy-700">
+            <div class="bg-[#1d1c19] border-b border-navy-800 px-5 py-3.5 flex items-center justify-between">
+              <span class="text-sm font-semibold text-[#edeae5]">Monitored furnaces</span>
+              <span class="text-xs text-navy-500">Updated just now</span>
+            </div>
+            <div class="bg-[#1d1c19]">
+              {fleet.map(d => (
+                <div class="flex items-center gap-4 px-5 py-3 border-b border-navy-800 last:border-0">
+                  <span class:list={['w-2 h-2 rounded-full shrink-0', d.dot]}></span>
+                  <div class="min-w-0">
+                    <div class="text-sm font-medium text-navy-200">{d.name}</div>
+                    <div class="text-xs text-navy-500">{d.note}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div class="bg-white divide-y divide-navy-100">
-            {fleet.map(d => (
-              <div class="flex items-center gap-4 px-5 py-3.5">
-                <div class:list={['w-2 h-2 rounded-full shrink-0', dotColor(d.status)]}></div>
-                <div class="flex-1 min-w-0">
-                  <div class="text-sm font-medium text-navy-800">{d.name}</div>
-                  <div class="text-xs text-navy-400">{d.note}</div>
+          <span class="text-xs text-navy-500">Illustration of the portal's fleet view.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOR THE BUSINESS ═══ -->
+  <section class="section bg-white">
+    <div class="container-fw flex flex-col gap-11">
+      <div class="flex flex-col gap-4 max-w-2xl">
+        <span class="section-eyebrow">For the business</span>
+        <h2 class="section-title">Worth money, not just goodwill.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {[
+          { title: 'Monitored agreements', body: 'Turn the maintenance agreement into a monitored agreement — a reason to renew and a premium tier the company down the road doesn’t have.' },
+          { title: 'Fewer callbacks', body: 'When the first visit starts from a named failure, fewer jobs need a second truck.' },
+          { title: 'Warranty installs, covered', body: 'You warranted that furnace for a decade. Now you’ll know what happened to it — before the homeowner does.' },
+        ].map(c => (
+          <div class="card-alt p-6 flex flex-col gap-2.5">
+            <h3 class="font-display font-bold text-lg text-navy-900">{c.title}</h3>
+            <p class="text-sm text-navy-500 leading-relaxed">{c.body}</p>
+          </div>
+        ))}
+      </div>
+      <div>
+        <a href="/for-service-companies" class="btn btn-secondary">The owner's case, in full</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MECHANICAL ROOM ═══ -->
+  <section class="section bg-navy-100 border-y border-navy-200">
+    <div class="container-fw">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="flex flex-col gap-7">
+          <div class="flex flex-col gap-4">
+            <span class="section-eyebrow">Built for the mechanical room</span>
+            <h2 class="section-title">No batteries. No wall wart. No homeowner homework.</h2>
+          </div>
+          <div class="flex flex-col gap-5">
+            {[
+              { t: 'Powered by the furnace', b: 'Runs off the furnace’s own 24V transformer, with battery ride-through.' },
+              { t: 'Detection on the sensor', b: 'Keeps watching through Wi-Fi drops; any unit that stops reporting gets flagged.' },
+              { t: 'Installed by your tech', b: 'Cabinet mount and low-voltage connections, inside a normal maintenance visit.' },
+              { t: 'Customers included, scoped', b: 'Homeowners and property managers see only their own equipment.' },
+            ].map(s => (
+              <div class="flex gap-4 items-stretch">
+                <span class="w-[3px] rounded-full bg-heat-500 shrink-0"></span>
+                <div class="flex flex-col gap-1">
+                  <span class="font-semibold text-[15px] text-navy-900">{s.t}</span>
+                  <span class="text-sm text-navy-500 leading-relaxed">{s.b}</span>
                 </div>
               </div>
             ))}
           </div>
         </div>
+
+        <!-- Install diagram -->
+        <div class="flex flex-col items-center gap-3">
+          <svg width="440" height="340" viewBox="0 0 440 340" fill="none" class="max-w-full h-auto" role="img" aria-label="Diagram: the FurnaceWatch sensor mounts on the furnace cabinet, powered by the 24V transformer, sensing the thermostat W-wire">
+            <rect x="120" y="30" width="180" height="280" rx="8" stroke="#3a3835" stroke-width="2.5" fill="#ffffff"></rect>
+            <rect x="140" y="50" width="140" height="70" rx="4" stroke="#a8a5a0" stroke-width="1.5" fill="#fafaf9"></rect>
+            <rect x="140" y="140" width="140" height="120" rx="4" stroke="#a8a5a0" stroke-width="1.5" fill="#fafaf9"></rect>
+            <circle cx="330" cy="110" r="26" fill="#e85d10"></circle>
+            <path d="M330 98c0 0-7 8-7 14a7 7 0 0014 0c0-3.5-1.7-5.8-3.5-7.6-1.2 2.9-3.5 5.2-3.5 7.6" fill="#ffffff"></path>
+            <line x1="304" y1="110" x2="300" y2="110" stroke="#e85d10" stroke-width="2.5"></line>
+            <line x1="60" y1="80" x2="140" y2="80" stroke="#78756f" stroke-width="2" stroke-dasharray="4 4"></line>
+            <rect x="20" y="66" width="44" height="28" rx="4" stroke="#78756f" stroke-width="1.5" fill="#ffffff"></rect>
+            <line x1="60" y1="240" x2="140" y2="240" stroke="#78756f" stroke-width="2" stroke-dasharray="4 4"></line>
+          </svg>
+          <div class="flex flex-wrap justify-center gap-x-5 gap-y-1.5">
+            <span class="font-mono text-[11px] text-navy-500 uppercase tracking-wider">Thermostat W-wire</span>
+            <span class="font-mono text-[11px] text-navy-500 uppercase tracking-wider">24V transformer</span>
+            <span class="font-mono text-[11px] text-heat-600 uppercase tracking-wider">Sensor — cabinet mount</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ── DESIGN PARTNERS ──────────────────────────────────────────── -->
-  <section class="section-sm bg-navy-50 border-t border-navy-200">
-    <div class="container-fw">
-      <div class="card p-8 lg:p-10 max-w-3xl mx-auto text-center space-y-5">
-        <span class="section-eyebrow justify-center">Design partner program</span>
-        <h2 class="text-2xl lg:text-3xl font-display font-semibold text-navy-900">Built with service companies, not just for them.</h2>
-        <p class="text-navy-500 leading-relaxed max-w-xl mx-auto">
-          We're working with a small number of HVAC service companies this heating season.
-          Partners get hardware, the portal, and a direct line to the person building it —
-          and shape what FurnaceWatch becomes.
+  <!-- ═══ DESIGN PARTNERS ═══ -->
+  <section class="bg-white">
+    <div class="container-fw py-14 lg:py-20">
+      <div class="card-alt max-w-3xl mx-auto text-center flex flex-col items-center gap-4 px-8 py-11 lg:px-14">
+        <span class="section-eyebrow">Design partner program</span>
+        <h2 class="font-display font-bold text-2xl lg:text-[28px] text-navy-900">Built with service companies, not just for them.</h2>
+        <p class="text-[15px] text-navy-500 leading-relaxed max-w-xl">
+          We're working with a small number of HVAC service companies this heating season — real
+          maintenance-agreement fleets, honest feedback, and a direct line to the person building
+          it. Partners lock in launch pricing.
         </p>
         <a href="/pricing#design-partners" class="btn btn-secondary">About the program</a>
       </div>

@@ -1,0 +1,68 @@
+---
+// src/pages/what-it-catches.astro — Failure modes: what the alert says, what it means for dispatch.
+// Driven by src/data/failureModes.ts (the single source, governed by BRAND_COPY §4).
+import PageLayout from '@layouts/PageLayout.astro';
+import CTASection from '@components/CTASection.astro';
+import { failureModes, severityDot } from '../data/failureModes';
+---
+
+<PageLayout
+  title="What It Catches"
+  description="The failure modes FurnaceWatch detects — heat call with no ignition, igniter failure, flame sensor failure, pressure switch and rollout trips, short cycling — with what the alert actually says."
+>
+  <!-- Hero -->
+  <section class="section-sm bg-navy-50 border-b border-navy-200">
+    <div class="container-fw text-center flex flex-col items-center gap-4 max-w-3xl mx-auto">
+      <span class="section-eyebrow">What it catches</span>
+      <h1 class="section-title text-4xl sm:text-[44px]">Failures get names, not guesses.</h1>
+      <p class="section-subtitle max-w-2xl">
+        FurnaceWatch does state-based diagnosis: it knows what a normal heating cycle looks like,
+        and when a cycle goes wrong it tells you which way. Not a prediction — a diagnosis, the
+        moment it happens.
+      </p>
+    </div>
+  </section>
+
+  <!-- Failure modes -->
+  <section class="section bg-white">
+    <div class="container-fw max-w-4xl mx-auto flex flex-col gap-5">
+      {failureModes.map(m => (
+        <div class="card p-7 lg:p-8 flex flex-col gap-4">
+          <div class="flex items-center gap-3">
+            <span class:list={['w-2.5 h-2.5 rounded-full shrink-0', severityDot[m.severity]]}></span>
+            <h2 class="font-display font-bold text-xl text-navy-900">{m.name}</h2>
+          </div>
+          <p class="text-navy-500 leading-relaxed">{m.summary}</p>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg bg-navy-900 px-4 py-3.5 flex flex-col gap-1">
+              <span class="font-mono text-[10px] uppercase tracking-[0.1em] text-navy-500">What the alert says</span>
+              <p class="font-mono text-[13px] text-navy-200 leading-relaxed">“{m.alert}”</p>
+            </div>
+            <div class="rounded-lg bg-navy-50 border border-navy-200 px-4 py-3.5 flex flex-col gap-1">
+              <span class="font-mono text-[10px] uppercase tracking-[0.1em] text-navy-400">What it means for dispatch</span>
+              <p class="text-[13px] text-navy-600 leading-relaxed">{m.dispatch}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Honesty note -->
+  <section class="section-sm bg-navy-50 border-t border-navy-200">
+    <div class="container-fw max-w-3xl mx-auto flex flex-col gap-3">
+      <h2 class="font-display font-bold text-xl text-navy-900">What it doesn't claim to catch</h2>
+      <p class="text-navy-500 leading-relaxed">
+        FurnaceWatch diagnoses failures as they happen. It does not predict when a component will
+        fail, estimate remaining life, or measure wear. If a monitoring product tells you it can,
+        ask how. And as detection grows to cover more failure modes, this page is where they'll
+        show up — not before.
+      </p>
+    </div>
+  </section>
+
+  <CTASection
+    title="Want to see an alert land?"
+    subtitle="Book a demo and watch a failure get named — on the sensor, in the portal, and on a phone."
+  />
+</PageLayout>

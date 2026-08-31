@@ -3,17 +3,23 @@ import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
+// Old routes → v2 information architecture (static meta-refresh pages)
+const legacyRedirects = {
+  '/features': '/how-it-works',
+  '/about': '/company',
+  '/contact': '/demo',
+};
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.furnacewatch.io',
   output: 'static',
+  redirects: legacyRedirects,
   integrations: [
     tailwind({
-      // Allow Tailwind utility classes to be used in .astro, .mdx, .ts files
       applyBaseStyles: false,
     }),
     mdx({
-      // MDX for blog posts and documentation
       syntaxHighlight: 'shiki',
       shikiConfig: {
         theme: 'night-owl',
@@ -21,8 +27,10 @@ export default defineConfig({
       },
     }),
     sitemap({
-      // Exclude admin and private paths from sitemap
-      filter: (page) => !page.includes('/admin'),
+      // Exclude admin paths and legacy redirect sources
+      filter: (page) =>
+        !page.includes('/admin') &&
+        !Object.keys(legacyRedirects).some(src => new URL(page).pathname === `${src}/`),
     }),
   ],
   markdown: {
@@ -36,7 +44,6 @@ export default defineConfig({
     build: {
       rollupOptions: {
         output: {
-          // Hash filenames for cache-busting on CDN
           assetFileNames: 'assets/[name]-[hash][extname]',
           chunkFileNames: 'assets/[name]-[hash].js',
           entryFileNames: 'assets/[name]-[hash].js',

@@ -1,24 +1,24 @@
 ---
-// src/pages/about.astro — Company page, written for HVAC service companies
+// src/pages/company.astro — Company page (v2 IA; replaces /about)
 import PageLayout from '@layouts/PageLayout.astro';
 import CTASection from '@components/CTASection.astro';
 ---
 
 <PageLayout
-  title="About FurnaceWatch"
+  title="Company"
   description="FurnaceWatch was built by an engineer who instrumented his own furnace after one too many failures — and realised the people who should know first are the companies that service it."
 >
   <!-- Hero -->
   <section class="section-sm bg-navy-50 border-b border-navy-200">
-    <div class="container-fw text-center space-y-4 max-w-3xl mx-auto">
-      <span class="section-eyebrow justify-center">Our story</span>
-      <h1 class="section-title text-4xl sm:text-5xl">The furnace was saying<br />what was wrong. Nobody was listening.</h1>
+    <div class="container-fw text-center flex flex-col items-center gap-4 max-w-3xl mx-auto">
+      <span class="section-eyebrow">Our story</span>
+      <h1 class="section-title text-4xl sm:text-[44px]">The furnace was saying what was wrong. Nobody was listening.</h1>
     </div>
   </section>
 
   <!-- Story -->
   <section class="section bg-white">
-    <div class="container-fw max-w-3xl mx-auto space-y-6 text-navy-600 leading-relaxed text-lg">
+    <div class="container-fw max-w-3xl mx-auto flex flex-col gap-6 text-navy-600 leading-relaxed text-lg">
       <p>
         FurnaceWatch started with a furnace that kept failing. A dirty flame sensor one winter, a
         draft inducer the next. Each time, the technician diagnosed the problem in minutes and said
@@ -39,8 +39,8 @@ import CTASection from '@components/CTASection.astro';
       <p>
         That's what FurnaceWatch is: a sensor your technician mounts on the furnace, and a portal
         that tells your office the failure mode the moment a heating cycle goes wrong. It doesn't
-        predict the future and it doesn't replace your technicians — it hands them the first
-        fifteen minutes of the diagnosis before the truck leaves.
+        predict the future and it doesn't replace your technicians — it hands them the diagnosis
+        before the truck leaves.
       </p>
       <p>
         FurnaceWatch is founder-led and early. If you book a demo, you'll be talking to the person
@@ -52,20 +52,20 @@ import CTASection from '@components/CTASection.astro';
 
   <!-- Values -->
   <section class="section bg-navy-50 border-t border-navy-200">
-    <div class="container-fw">
-      <div class="text-center mb-12">
-        <span class="section-eyebrow justify-center">How we build</span>
+    <div class="container-fw flex flex-col gap-11">
+      <div class="text-center">
+        <span class="section-eyebrow">How we build</span>
       </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
         {[
           { title: 'Diagnosis, not prediction', body: 'We tell you what failed the moment it fails. We don’t claim to see the future, and we won’t sell you copy that does.' },
           { title: 'Open evidence', body: 'Every alert carries the cycle behind it — what the sensor saw and when. No black boxes.' },
           { title: 'Built for technicians', body: 'The install has to fit inside a normal maintenance visit, or it doesn’t ship.' },
           { title: 'On the device', body: 'Detection runs on the sensor itself, so a Wi-Fi drop never means an unwatched furnace.' },
         ].map(v => (
-          <div class="card p-6 space-y-3">
-            <h3 class="text-base font-semibold text-navy-900">{v.title}</h3>
-            <p class="text-navy-500 text-sm leading-relaxed">{v.body}</p>
+          <div class="card p-6 flex flex-col gap-2.5">
+            <h3 class="font-display font-bold text-base text-navy-900">{v.title}</h3>
+            <p class="text-sm text-navy-500 leading-relaxed">{v.body}</p>
           </div>
         ))}
       </div>

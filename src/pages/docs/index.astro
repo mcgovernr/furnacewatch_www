@@ -46,7 +46,7 @@ const grouped = sections.reduce((acc, section) => {
       {allDocs.length === 0
         ? <div class="text-center py-16 space-y-4">
             <p class="text-navy-500">The install guide and platform documentation are being written alongside our design-partner program.</p>
-            <p class="text-navy-500">Need something now? <a href="/contact">Ask us directly</a> — you'll get an answer from the person who built it.</p>
+            <p class="text-navy-500">Need something now? <a href="/demo">Ask us directly</a> — you'll get an answer from the person who built it.</p>
           </div>
         : <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sections.filter(s => grouped[s]?.length > 0).map(section => (

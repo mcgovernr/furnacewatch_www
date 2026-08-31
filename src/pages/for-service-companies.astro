@@ -1,0 +1,99 @@
+---
+// src/pages/for-service-companies.astro — The owner's case: agreements, callbacks, warranty, dispatch.
+import PageLayout from '@layouts/PageLayout.astro';
+import CTASection from '@components/CTASection.astro';
+
+const roles = [
+  { role: 'Owner / GM', gets: 'A maintenance agreement that’s worth more at renewal, fewer emergency scrambles in cold snaps, and visibility into the installed base you stand behind.' },
+  { role: 'Service manager / dispatcher', gets: 'The failure mode and timeline before assigning the truck. Critical units surface themselves — no morning spreadsheet ritual.' },
+  { role: 'Technician', gets: 'A named failure and the cycle history before walking in. The right parts on the truck, and a customer who already got a heads-up from your office.' },
+  { role: 'Office / CSR', gets: 'When the customer calls, their furnace is already on screen — what it did, when, and what your team is doing about it.' },
+];
+---
+
+<PageLayout
+  title="For Service Companies"
+  description="What FurnaceWatch does for the business: monitored maintenance agreements, fewer callbacks, covered warranty installs, and dispatch that starts from a diagnosis."
+>
+  <!-- Hero -->
+  <section class="section-sm bg-navy-50 border-b border-navy-200">
+    <div class="container-fw text-center flex flex-col items-center gap-4 max-w-3xl mx-auto">
+      <span class="section-eyebrow">For service companies</span>
+      <h1 class="section-title text-4xl sm:text-[44px]">Make the maintenance agreement worth more.</h1>
+      <p class="section-subtitle max-w-2xl">
+        Monitoring isn't a gadget line-item. It changes what your agreement is: from two visits a
+        year and a promise, to a furnace that's actually watched — under your company's name.
+      </p>
+    </div>
+  </section>
+
+  <!-- The three business cases -->
+  <section class="section bg-white">
+    <div class="container-fw max-w-3xl mx-auto flex flex-col gap-14">
+      <div class="flex flex-col gap-4">
+        <span class="section-eyebrow">Revenue</span>
+        <h2 class="section-title text-3xl">The monitored agreement</h2>
+        <p class="text-navy-600 leading-relaxed">
+          Every service company sells roughly the same maintenance agreement: a tune-up, a filter,
+          priority scheduling. It renews on habit, and it's the first thing a homeowner cuts.
+          A <strong>monitored</strong> agreement is a different product — "we're watching your
+          furnace, and if it fails at 5 AM, we'll know before you're awake." That's a reason to
+          renew, a premium tier to sell, and a line the company down the road can't say.
+        </p>
+        <p class="text-navy-600 leading-relaxed">
+          You set the price of that tier; FurnaceWatch is the per-furnace cost underneath it.
+          The margin between them is yours.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <span class="section-eyebrow">Cost</span>
+        <h2 class="section-title text-3xl">Callbacks and cold-snap chaos</h2>
+        <p class="text-navy-600 leading-relaxed">
+          No-heat calls cluster on the coldest nights, exactly when every truck is booked. Today
+          each one starts as a mystery: roll the truck, diagnose in the basement, hope the part is
+          on board. When dispatch starts from a named failure — igniter, flame sensor, pressure
+          switch — the first visit is the informed one, and fewer jobs need a second truck.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <span class="section-eyebrow">Risk</span>
+        <h2 class="section-title text-3xl">The installs you warranted</h2>
+        <p class="text-navy-600 leading-relaxed">
+          You put a ten-year warranty on equipment you installed years ago, and you find out it
+          failed when the homeowner is already angry. With the furnace watched, you know what
+          happened and when — before the call, with the cycle record to show for it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Per role -->
+  <section class="section bg-navy-50 border-y border-navy-200">
+    <div class="container-fw flex flex-col gap-11">
+      <div class="flex flex-col gap-4 max-w-2xl">
+        <span class="section-eyebrow">Around the shop</span>
+        <h2 class="section-title text-3xl">What each seat gets out of it.</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        {roles.map(r => (
+          <div class="card p-6 flex flex-col gap-2.5">
+            <h3 class="font-display font-bold text-base text-navy-900">{r.role}</h3>
+            <p class="text-sm text-navy-500 leading-relaxed">{r.gets}</p>
+          </div>
+        ))}
+      </div>
+      <p class="text-sm text-navy-500 max-w-2xl">
+        Property-management portfolios work the same way — one login per manager, scoped to their
+        buildings. <a href="/demo">Talk to us</a> if that's your customer base.
+      </p>
+    </div>
+  </section>
+
+  <CTASection
+    title="Run a fleet on it this season."
+    subtitle="A small number of design partners get the hardware, the portal, and launch pricing locked in. Let's talk about your installed base."
+    primaryLabel="Apply as a design partner"
+  />
+</PageLayout>
