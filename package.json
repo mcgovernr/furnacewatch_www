@@ -10,7 +10,11 @@
     "preview": "astro preview",
     "astro": "astro",
     "typecheck": "astro check",
-    "lint": "eslint src --ext .ts,.astro"
+    "lint": "node scripts/check-claims.mjs",
+    "check": "npm run lint && npm run typecheck && npm run build"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "astro": "^5.7.0",

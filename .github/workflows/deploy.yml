@@ -1,0 +1,92 @@
+name: Deploy
+
+# Production release flow: every push to main (normally a PR merge) builds the
+# site and ships it to S3 + CloudFront. Auth is GitHub OIDC → an AWS role scoped
+# to this bucket and distribution — no long-lived keys anywhere.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write   # OIDC token for AWS
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+  S3_BUCKET: furnacewatch-www-331411055902
+  CF_DISTRIBUTION_ID: E1N85VE6H30GSV
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Claims-policy lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build site
+        run: npm run build
+        env:
+          SITE_URL: https://www.furnacewatch.io
+          PUBLIC_APP_URL: https://app.furnacewatch.io
+          # Optional — set these as repo secrets/variables when the accounts exist:
+          FORMSPREE_FORM_ID: ${{ secrets.FORMSPREE_FORM_ID }}
+          PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.PUBLIC_PLAUSIBLE_DOMAIN }}
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::331411055902:role/furnacewatch-www-github-deploy
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync HTML (no-cache, delete removed pages)
+        run: |
+          aws s3 sync ./dist/ "s3://$S3_BUCKET/" \
+            --exclude "*" --include "*.html" \
+            --cache-control "max-age=0,no-cache" \
+            --delete --only-show-errors
+
+      - name: Sync hashed assets (immutable)
+        run: |
+          aws s3 sync ./dist/ "s3://$S3_BUCKET/" \
+            --exclude "*" --include "assets/*" \
+            --cache-control "max-age=31536000,immutable" \
+            --only-show-errors
+
+      - name: Sync unhashed statics (1h cache)
+        run: |
+          aws s3 sync ./dist/ "s3://$S3_BUCKET/" \
+            --exclude "*.html" --exclude "assets/*" \
+            --cache-control "max-age=3600" \
+            --only-show-errors
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$CF_DISTRIBUTION_ID" \
+            --paths "/*"
+
+      - name: Verify production
+        run: |
+          sleep 20
+          code=$(curl -s -o /dev/null -w '%{http_code}' https://www.furnacewatch.io/)
+          echo "www.furnacewatch.io -> $code"
+          test "$code" = "200"
