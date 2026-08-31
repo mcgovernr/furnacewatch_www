@@ -8,6 +8,7 @@ const legacyRedirects = {
   '/features': '/how-it-works',
   '/about': '/company',
   '/contact': '/demo',
+  '/docs': '/how-it-works',
 };
 
 // https://astro.build/config

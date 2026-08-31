@@ -1,5 +1,10 @@
 import { defineCollection, z } from 'astro:content';
 
+// Only collections with real content are declared — astro check cannot
+// generate types for an empty collection folder on a cold checkout, which
+// breaks CI. When the install guide lands (REDESIGN_PLAN Phase 5), add a
+// `docs` collection together with its first .mdx page in the same commit.
+
 // ── Blog Posts ──────────────────────────────────────────────────────────────
 const blog = defineCollection({
   type: 'content',
@@ -24,63 +29,4 @@ const blog = defineCollection({
   }),
 });
 
-// ── Documentation ───────────────────────────────────────────────────────────
-const docs = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    order: z.number().default(0),
-    section: z.enum([
-      'Getting Started',
-      'Installation',
-      'Platform Overview',
-      'Devices & Sensors',
-      'Alerts & Notifications',
-      'Intelligence & ML',
-      'Integrations',
-      'API Reference',
-      'Administration',
-      'Troubleshooting',
-    ]),
-    badge: z.enum(['New', 'Beta', 'Deprecated']).optional(),
-    draft: z.boolean().default(false),
-  }),
-});
-
-// ── Team Members (used on /about page) ─────────────────────────────────────
-const team = defineCollection({
-  type: 'data',
-  schema: z.object({
-    name: z.string(),
-    title: z.string(),
-    bio: z.string(),
-    image: z.string().optional(),
-    linkedin: z.string().url().optional(),
-    twitter: z.string().optional(),
-    order: z.number().default(0),
-  }),
-});
-
-// ── Customer Case Studies (used on /customers page) ─────────────────────────
-const caseStudies = defineCollection({
-  type: 'content',
-  schema: z.object({
-    company: z.string(),
-    industry: z.string(),
-    location: z.string(),
-    logoImage: z.string().optional(),
-    heroImage: z.string().optional(),
-    summary: z.string(),
-    metrics: z.array(z.object({
-      label: z.string(),
-      value: z.string(),
-      description: z.string().optional(),
-    })).default([]),
-    publishDate: z.coerce.date(),
-    featured: z.boolean().default(false),
-    draft: z.boolean().default(false),
-  }),
-});
-
-export const collections = { blog, docs, team, caseStudies };
+export const collections = { blog };
