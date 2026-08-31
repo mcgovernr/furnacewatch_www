@@ -50,6 +50,8 @@ jobs:
           # Optional — set these as repo secrets/variables when the accounts exist:
           FORMSPREE_FORM_ID: ${{ secrets.FORMSPREE_FORM_ID }}
           PUBLIC_PLAUSIBLE_DOMAIN: ${{ vars.PUBLIC_PLAUSIBLE_DOMAIN }}
+          # Verification tokens are public by nature (visible in DNS/HTML)
+          PUBLIC_GOOGLE_SITE_VERIFICATION: XLPoug0hwKjgrd_ifrVBk-6oQbFxsN5uxMVfLBreYSQ
 
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4

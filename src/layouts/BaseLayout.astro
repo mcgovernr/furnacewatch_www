@@ -26,6 +26,7 @@ const {
 const siteUrl    = import.meta.env.SITE_URL || 'https://www.furnacewatch.io';
 const appUrl     = import.meta.env.PUBLIC_APP_URL || 'https://app.furnacewatch.io';
 const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || '';
+const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || '';
 const fullTitle  = title.includes('FurnaceWatch') ? title : `${title} — FurnaceWatch`;
 const canonicalUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
 const fullOgImage  = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
@@ -43,6 +44,7 @@ const fullOgImage  = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    {googleVerification && <meta name="google-site-verification" content={googleVerification} />}
 
     <!-- ── Open Graph ── -->
     <meta property="og:type"        content={ogType} />
