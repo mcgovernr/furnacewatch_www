@@ -1,0 +1,57 @@
+---
+// src/pages/blog/index.astro — Blog listing page (light theme)
+import { getCollection } from 'astro:content';
+import PageLayout from '@layouts/PageLayout.astro';
+import CTASection from '@components/CTASection.astro';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sorted   = allPosts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+---
+
+<PageLayout
+  title="Blog"
+  description="FurnaceWatch blog — product updates and remote-diagnostics insights for HVAC service companies."
+>
+  <!-- Hero -->
+  <section class="section-sm bg-navy-50 border-b border-navy-200">
+    <div class="container-fw space-y-4">
+      <span class="section-eyebrow">Blog</span>
+      <h1 class="section-title text-4xl">Notes for HVAC service companies.</h1>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-fw">
+      {sorted.length === 0
+        ? <p class="text-navy-500 text-center py-20">No posts yet — check back soon.</p>
+        : <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sorted.map(post => (
+              <a
+                href={`/blog/${post.slug}`}
+                class="card-hover p-6 flex flex-col gap-4 group no-underline"
+              >
+                <div class="flex items-center gap-2">
+                  <span class="badge-navy">{post.data.category}</span>
+                  <span class="text-xs text-navy-400">
+                    {post.data.publishDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </span>
+                </div>
+                <h2 class="text-lg font-semibold text-navy-900 leading-snug group-hover:text-heat-700 transition-colors">
+                  {post.data.title}
+                </h2>
+                <p class="text-navy-500 text-sm leading-relaxed flex-1">{post.data.description}</p>
+                <div class="flex items-center gap-2 text-heat-600 text-sm font-medium">
+                  Read more
+                  <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
+              </a>
+            ))}
+          </div>
+      }
+    </div>
+  </section>
+
+  <CTASection />
+</PageLayout>

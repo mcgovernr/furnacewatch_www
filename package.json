@@ -1,0 +1,27 @@
+{
+  "name": "furnacewatch-www",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "FurnaceWatch marketing website — Astro static site with Tailwind CSS, MDX blog and docs, deployed to S3 + CloudFront",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "typecheck": "astro check",
+    "lint": "eslint src --ext .ts,.astro"
+  },
+  "dependencies": {
+    "astro": "^5.7.0",
+    "@astrojs/tailwind": "^5.1.3",
+    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/typography": "^0.5.15",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^5.7.0"
+  }
+}

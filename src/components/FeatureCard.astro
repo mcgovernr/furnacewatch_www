@@ -1,0 +1,40 @@
+---
+// FeatureCard.astro — Individual feature tile used in the features grid
+
+export interface Props {
+  icon: string;       // SVG path string (the <path d="..."> value)
+  title: string;
+  description: string;
+  badge?: string;     // Optional badge: 'New', 'Beta', etc.
+  highlighted?: boolean; // Makes the card stand out (heat border)
+}
+
+const { icon, title, description, badge, highlighted = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    'card-hover p-6 group',
+    highlighted
+      ? 'border-heat-500/40 bg-heat-50'
+      : '',
+  ]}
+>
+  <div class="space-y-4">
+    <!-- Icon -->
+    <div class="feature-icon group-hover:bg-heat-500/20 group-hover:border-heat-500/40 transition-colors duration-300">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d={icon} />
+      </svg>
+    </div>
+
+    <!-- Title + badge -->
+    <div class="flex items-start justify-between gap-3">
+      <h3 class="text-lg font-semibold text-navy-900 leading-snug">{title}</h3>
+      {badge && <span class="badge-heat shrink-0">{badge}</span>}
+    </div>
+
+    <!-- Description -->
+    <p class="text-navy-500 text-sm leading-relaxed">{description}</p>
+  </div>
+</div>

@@ -1,0 +1,148 @@
+---
+// Header.astro — Site-wide navigation bar (light theme)
+
+export interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
+const appUrl = import.meta.env.PUBLIC_APP_URL || 'https://app.furnacewatch.io';
+
+const navLinks = [
+  { label: 'How it works', href: '/features' },
+  { label: 'Pricing',      href: '/pricing'  },
+  { label: 'About',        href: '/about'    },
+  { label: 'Blog',         href: '/blog'     },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-navy-200 transition-all duration-300"
+>
+  <div class="container-fw">
+    <nav class="flex items-center justify-between h-16 lg:h-18" aria-label="Main navigation">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 group" aria-label="FurnaceWatch home">
+        <div class="w-8 h-8 relative">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <path
+              d="M16 2C16 2 10 9 10 16a6 6 0 0012 0c0-3-1.5-5-3-6.5C18 12 17 14 17 16a1 1 0 01-2 0c0-4 1-8 1-14z"
+              fill="url(#flame-grad)"
+            />
+            <defs>
+              <linearGradient id="flame-grad" x1="16" y1="2" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#fbbf24" />
+                <stop offset="0.5" stop-color="#e85d10" />
+                <stop offset="1" stop-color="#c44d0e" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="font-display text-lg font-bold text-navy-900 tracking-tight">
+          FurnaceWatch
+        </span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <div class="hidden lg:flex items-center gap-1">
+        {navLinks.map((link) => {
+          const isActive = currentPath === link.href || currentPath.startsWith(link.href + '/');
+          return (
+            <a
+              href={link.href}
+              class:list={[
+                'nav-link px-4 py-2 rounded-lg no-underline',
+                isActive ? 'text-navy-900 bg-navy-100' : 'hover:bg-navy-100',
+              ]}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          );
+        })}
+      </div>
+
+      <!-- Desktop CTAs -->
+      <div class="hidden lg:flex items-center gap-3">
+        <a
+          href={`${appUrl}/login`}
+          rel="noopener"
+          class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium border border-navy-300 text-navy-700 bg-white hover:bg-navy-50 hover:border-navy-400 hover:text-navy-900 transition-colors duration-150 no-underline"
+        >
+          Sign in
+        </a>
+        <a href="/contact" class="btn btn-primary btn-sm">
+          Request a demo
+        </a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="mobile-menu-toggle"
+        class="lg:hidden p-2 rounded-lg text-navy-500 hover:text-navy-900 hover:bg-navy-100 transition-colors"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Toggle navigation"
+      >
+        <svg id="icon-hamburger" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="icon-close" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden hidden border-t border-navy-200 bg-white"
+    aria-hidden="true"
+  >
+    <div class="container-fw py-4 flex flex-col gap-1">
+      {navLinks.map((link) => {
+        const isActive = currentPath === link.href || currentPath.startsWith(link.href + '/');
+        return (
+          <a
+            href={link.href}
+            class:list={[
+              'px-4 py-3 rounded-xl text-sm font-medium transition-colors no-underline',
+              isActive
+                ? 'bg-navy-100 text-navy-900'
+                : 'text-navy-600 hover:bg-navy-100 hover:text-navy-900',
+            ]}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+      <div class="border-t border-navy-200 mt-2 pt-4 flex flex-col gap-2">
+        <a href={`${appUrl}/login`} rel="noopener" class="btn btn-secondary">Sign in</a>
+        <a href="/contact" class="btn btn-primary">Request a demo</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Spacer so page content clears the fixed header -->
+<div class:list={['h-16 lg:h-18', { 'hidden': transparent }]}></div>
+
+<script>
+  // Mobile menu toggle
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu   = document.getElementById('mobile-menu');
+  const iconOpen  = document.getElementById('icon-hamburger');
+  const iconClose = document.getElementById('icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+    menu?.setAttribute('aria-hidden', String(!open));
+    iconOpen?.classList.toggle('hidden', open);
+    iconClose?.classList.toggle('hidden', !open);
+  });
+</script>

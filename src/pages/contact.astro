@@ -1,0 +1,145 @@
+---
+// src/pages/contact.astro — Demo request page
+// If FORMSPREE_FORM_ID is unset, the form is replaced by a direct-email panel
+// (never ship a form that posts nowhere).
+import PageLayout from '@layouts/PageLayout.astro';
+
+const formspreeId = import.meta.env.FORMSPREE_FORM_ID || '';
+const hasForm = Boolean(formspreeId);
+
+const expectations = [
+  { title: '30-minute call', body: 'A live walk-through — the sensor, the portal, and what an alert looks like on a phone.' },
+  { title: 'Straight answers', body: 'You’ll be talking to the founder. If it’s not a fit for your installed base, we’ll say so.' },
+  { title: 'Design partner option', body: 'A small number of service companies are running FurnaceWatch on real maintenance-agreement fleets this season.' },
+];
+---
+
+<PageLayout
+  title="Request a Demo"
+  description="Book a 30-minute FurnaceWatch demo — the sensor, the portal, and the alerts, live. You'll talk to the person who built it."
+>
+  <!-- Hero -->
+  <section class="section-sm bg-navy-50 border-b border-navy-200">
+    <div class="container-fw text-center space-y-4 max-w-2xl mx-auto">
+      <span class="section-eyebrow justify-center">Get in touch</span>
+      <h1 class="section-title text-4xl">Request a demo.</h1>
+      <p class="section-subtitle">30 minutes. No sales pressure. Straight answers.</p>
+    </div>
+  </section>
+
+  <!-- Form + sidebar -->
+  <section class="section bg-white">
+    <div class="container-fw">
+      <div class="grid lg:grid-cols-5 gap-12 lg:gap-16 max-w-5xl mx-auto">
+        <div class="lg:col-span-3">
+          {hasForm ? (
+            <div class="card p-8">
+              <form
+                action={`https://formspree.io/f/${formspreeId}`}
+                method="POST"
+                class="space-y-6"
+                id="contact-form"
+              >
+                <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+                <div class="grid sm:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label for="name" class="block text-sm font-medium text-navy-800">Your name *</label>
+                    <input type="text" id="name" name="name" required
+                      class="w-full rounded-lg bg-white border border-navy-300 text-navy-900 placeholder-navy-400
+                             px-4 py-3 text-sm focus:border-heat-500 focus:ring-1 focus:ring-heat-500 outline-none transition-colors" />
+                  </div>
+                  <div class="space-y-2">
+                    <label for="role" class="block text-sm font-medium text-navy-800">Your role</label>
+                    <input type="text" id="role" name="role" placeholder="Owner, service manager, dispatcher…"
+                      class="w-full rounded-lg bg-white border border-navy-300 text-navy-900 placeholder-navy-400
+                             px-4 py-3 text-sm focus:border-heat-500 focus:ring-1 focus:ring-heat-500 outline-none transition-colors" />
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="email" class="block text-sm font-medium text-navy-800">Work email *</label>
+                  <input type="email" id="email" name="email" required placeholder="you@company.com"
+                    class="w-full rounded-lg bg-white border border-navy-300 text-navy-900 placeholder-navy-400
+                           px-4 py-3 text-sm focus:border-heat-500 focus:ring-1 focus:ring-heat-500 outline-none transition-colors" />
+                </div>
+
+                <div class="space-y-2">
+                  <label for="company" class="block text-sm font-medium text-navy-800">Company *</label>
+                  <input type="text" id="company" name="company" required
+                    class="w-full rounded-lg bg-white border border-navy-300 text-navy-900 placeholder-navy-400
+                           px-4 py-3 text-sm focus:border-heat-500 focus:ring-1 focus:ring-heat-500 outline-none transition-colors" />
+                </div>
+
+                <div class="space-y-2">
+                  <label for="agreements" class="block text-sm font-medium text-navy-800">Furnaces under maintenance agreement</label>
+                  <select id="agreements" name="agreements"
+                    class="w-full rounded-lg bg-white border border-navy-300 text-navy-900
+                           px-4 py-3 text-sm focus:border-heat-500 focus:ring-1 focus:ring-heat-500 outline-none transition-colors">
+                    <option value="">Select…</option>
+                    <option value="<100">Under 100</option>
+                    <option value="100-500">100–500</option>
+                    <option value="500-2000">500–2,000</option>
+                    <option value="2000+">2,000+</option>
+                  </select>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="message" class="block text-sm font-medium text-navy-800">Anything you want us to cover?</label>
+                  <textarea id="message" name="message" rows="4"
+                    placeholder="Your service area, your typical installed base, what you'd want out of monitoring…"
+                    class="w-full rounded-lg bg-white border border-navy-300 text-navy-900 placeholder-navy-400
+                           px-4 py-3 text-sm focus:border-heat-500 focus:ring-1 focus:ring-heat-500 outline-none transition-colors resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full">
+                  Request a demo
+                </button>
+
+                <p class="text-xs text-navy-400 text-center">
+                  We reply within one business day. No spam, no cold calls.
+                </p>
+              </form>
+            </div>
+          ) : (
+            <div class="card p-8 lg:p-10 space-y-5">
+              <h2 class="text-xl font-display font-semibold text-navy-900">Email us directly</h2>
+              <p class="text-navy-500 leading-relaxed">
+                Tell us your company, your role, and roughly how many furnaces you have under
+                maintenance agreement — we'll reply within one business day with demo times.
+              </p>
+              <a href="mailto:info@furnacewatch.io?subject=Demo%20request" class="btn btn-primary btn-lg inline-flex">
+                info@furnacewatch.io
+              </a>
+              <p class="text-xs text-navy-400">No spam, no cold calls.</p>
+            </div>
+          )}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-2 space-y-8">
+          <div class="space-y-6">
+            <h3 class="text-lg font-display font-semibold text-navy-900">What to expect</h3>
+            {expectations.map(item => (
+              <div class="flex gap-4">
+                <span class="w-1.5 rounded-full bg-heat-500/60 shrink-0" aria-hidden="true"></span>
+                <div>
+                  <h4 class="text-sm font-semibold text-navy-900">{item.title}</h4>
+                  <p class="text-sm text-navy-500 mt-1 leading-relaxed">{item.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {hasForm && (
+            <div class="card p-6 space-y-2 bg-navy-50">
+              <h4 class="text-sm font-semibold text-navy-900">Prefer email?</h4>
+              <a href="mailto:info@furnacewatch.io" class="text-heat-600 text-sm font-medium hover:text-heat-700 transition-colors">
+                info@furnacewatch.io
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>

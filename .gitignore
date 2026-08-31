@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+.astro/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# Editor
+.vscode/settings.json
+.idea/
+
+# Astro cache
+.astro/
+
+# Testing
+coverage/
+
+# design-sync (Claude Design sync) — generated/staged, not committed
+.ds-sync/
+ds-bundle/
+.ds-input.css
+.design-sync/.cache/
+.design-sync/node_modules
+# NOTE: .design-sync/{config.json,NOTES.md,conventions.md} and the build recipe
+# (.ds-tw.config.mjs, .ds-safelist.html) ARE committed — the reproducible sync inputs.

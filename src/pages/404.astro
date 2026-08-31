@@ -1,0 +1,23 @@
+---
+// src/pages/404.astro — Custom 404 page (light theme)
+import PageLayout from '@layouts/PageLayout.astro';
+
+const appUrl = import.meta.env.PUBLIC_APP_URL || 'https://app.furnacewatch.io';
+---
+
+<PageLayout title="Page Not Found" description="This page doesn't exist." noIndex={true}>
+  <section class="section flex items-center justify-center min-h-[60vh] bg-white">
+    <div class="container-fw text-center space-y-6 max-w-lg mx-auto">
+      <div class="font-display text-7xl font-bold text-heat-600">404</div>
+      <h1 class="text-2xl font-display font-semibold text-navy-900">Page not found</h1>
+      <p class="text-navy-500">
+        The page you're looking for doesn't exist or has moved.
+        If you're trying to sign in, use the portal link below.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/" class="btn btn-primary">Go home</a>
+        <a href={`${appUrl}/login`} class="btn btn-secondary" rel="noopener">Sign in to the portal</a>
+      </div>
+    </div>
+  </section>
+</PageLayout>

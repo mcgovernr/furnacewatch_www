@@ -1,0 +1,150 @@
+---
+// src/pages/pricing.astro — Pricing model + design partner program + FAQ
+// Decision (2026-08-30): publish the model only, no number until the WTP study is done.
+import PageLayout from '@layouts/PageLayout.astro';
+import CTASection from '@components/CTASection.astro';
+
+const faqs = [
+  {
+    q: 'Which furnaces does it work with?',
+    a: 'Gas furnaces with standard 24V controls. We confirm fit for your typical installed base during the demo.',
+  },
+  {
+    q: 'Who installs it?',
+    a: 'Your technicians, during a normal maintenance visit. The sensor mounts to the furnace cabinet, powers from the furnace’s 24V transformer, and senses the heat call from the thermostat wires.',
+  },
+  {
+    q: 'Does it need internet at the home?',
+    a: 'Wi-Fi at the home carries alerts and portal data. Detection itself runs on the sensor, so the furnace is still being watched during an outage — and the portal flags any unit that stops reporting.',
+  },
+  {
+    q: 'What do alerts look like?',
+    a: 'A push notification to your team’s phones that names the failure mode — for example, "Heat call with no ignition — thermostat calling since 5:42 AM, furnace has not fired."',
+  },
+  {
+    q: 'Can our customers see it?',
+    a: 'Yes. Homeowners and property managers can log in and see only their own equipment, under your company’s service.',
+  },
+  {
+    q: 'Is there a contract?',
+    a: 'Monitoring is per furnace — add units as you install them, drop units when an agreement lapses.',
+  },
+];
+---
+
+<PageLayout
+  title="Pricing"
+  description="FurnaceWatch is priced per monitored furnace per month, sensor included. Early design partners lock in launch pricing."
+>
+  <!-- Hero -->
+  <section class="section-sm bg-navy-50 border-b border-navy-200">
+    <div class="container-fw text-center space-y-4 max-w-3xl mx-auto">
+      <span class="section-eyebrow justify-center">Pricing</span>
+      <h1 class="section-title text-4xl sm:text-5xl">Priced per furnace.<br />Sensor included.</h1>
+    </div>
+  </section>
+
+  <!-- Model -->
+  <section class="section bg-white">
+    <div class="container-fw max-w-3xl mx-auto space-y-8">
+      <div class="card p-8 lg:p-10 space-y-6">
+        <h2 class="text-2xl font-display font-semibold text-navy-900">One number per monitored furnace, per month.</h2>
+        <ul class="space-y-4">
+          {[
+            'The sensor is included — no separate hardware purchase',
+            'The portal is included for your whole team, with no per-user fees',
+            'Customer logins (homeowner and property manager views) included',
+            'Add furnaces as you install; drop them when an agreement lapses',
+          ].map(item => (
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-heat-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span class="text-navy-600 leading-relaxed">{item}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="pt-6 border-t border-navy-200 space-y-4">
+          <p class="text-navy-500 leading-relaxed">
+            We haven't published the number yet. FurnaceWatch is enrolling early design partners
+            this heating season, and partners lock in launch pricing. If you want to know where the
+            price is heading for a fleet your size, ask — we'll tell you directly.
+          </p>
+          <a href="/contact" class="btn btn-primary">Talk to us about your fleet</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Design partner program -->
+  <section id="design-partners" class="section bg-navy-50 border-y border-navy-200">
+    <div class="container-fw max-w-3xl mx-auto space-y-10">
+      <div class="space-y-4">
+        <span class="section-eyebrow">Design partner program</span>
+        <h2 class="section-title text-3xl">A small number of service companies. One heating season.</h2>
+        <p class="section-subtitle">
+          We're instrumenting real maintenance-agreement fleets with a handful of companies
+          and building FurnaceWatch around what their dispatchers and technicians actually need.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="card p-7 space-y-4">
+          <h3 class="text-lg font-semibold text-navy-900">What partners get</h3>
+          <ul class="space-y-3">
+            {[
+              'Sensors and the portal for the season, at no cost',
+              'A direct line to the founder — the person who built it answers',
+              'Real input on the roadmap while it’s still soft',
+              'Launch pricing locked in when the program ends',
+            ].map(i => (
+              <li class="flex items-start gap-3 text-sm text-navy-600 leading-relaxed">
+                <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                {i}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="card p-7 space-y-4">
+          <h3 class="text-lg font-semibold text-navy-900">What we ask</h3>
+          <ul class="space-y-3">
+            {[
+              '10–25 monitored furnaces on active maintenance agreements',
+              'A named contact and a short feedback call each month',
+              'Honest install feedback from your technicians',
+              'A case study at season’s end — you approve it before it’s published',
+            ].map(i => (
+              <li class="flex items-start gap-3 text-sm text-navy-600 leading-relaxed">
+                <svg class="w-4 h-4 text-heat-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                {i}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div class="text-center">
+        <a href="/contact" class="btn btn-primary btn-lg">Apply as a design partner</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section bg-white">
+    <div class="container-fw max-w-3xl mx-auto">
+      <h2 class="section-title text-3xl text-center mb-10">Frequently asked questions</h2>
+      <div class="space-y-3">
+        {faqs.map(f => (
+          <details class="card group">
+            <summary class="cursor-pointer list-none p-5 flex items-center justify-between gap-4">
+              <span class="font-semibold text-navy-900">{f.q}</span>
+              <svg class="w-4 h-4 text-navy-400 shrink-0 transition-transform group-open:rotate-45" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </summary>
+            <p class="px-5 pb-5 text-navy-500 text-sm leading-relaxed">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Not sure it fits your fleet?"
+    subtitle="Book a 30-minute call. We'll walk through your installed base and your service model, and tell you straight whether it's a fit."
+  />
+</PageLayout>

@@ -1,0 +1,9 @@
+{
+  "pkg": "furnacewatch-www",
+  "globalName": "FurnaceWatch",
+  "shape": "package",
+  "tokensOnly": true,
+  "cssEntry": "src/styles/global.css",
+  "readmeHeader": ".design-sync/conventions.md",
+  "runtimeFontPrefixes": ["Plus Jakarta Sans", "DM Sans", "JetBrains Mono"]
+}

@@ -1,0 +1,59 @@
+---
+// src/pages/blog/[...slug].astro — Individual blog post page (light theme)
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import PageLayout from '@layouts/PageLayout.astro';
+import CTASection from '@components/CTASection.astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+};
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<PageLayout
+  title={post.data.title}
+  description={post.data.description}
+  ogType="article"
+  publishDate={post.data.publishDate}
+>
+  <!-- Article header -->
+  <section class="section-sm bg-navy-50 border-b border-navy-200">
+    <div class="container-fw max-w-3xl mx-auto space-y-5">
+      <div class="flex items-center gap-3">
+        <span class="badge-navy">{post.data.category}</span>
+        <time class="text-xs text-navy-400" datetime={post.data.publishDate.toISOString()}>
+          {post.data.publishDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+        </time>
+      </div>
+      <h1 class="section-title text-4xl">{post.data.title}</h1>
+      <p class="section-subtitle">{post.data.description}</p>
+      <p class="text-sm text-navy-400">By {post.data.author}</p>
+    </div>
+  </section>
+
+  <!-- Article body -->
+  <article class="section bg-white">
+    <div class="container-fw max-w-3xl mx-auto">
+      <div class="prose-fw">
+        <Content />
+      </div>
+
+      {post.data.tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-12 pt-8 border-t border-navy-200">
+          {post.data.tags.map(tag => (
+            <span class="badge-navy">#{tag}</span>
+          ))}
+        </div>
+      )}
+    </div>
+  </article>
+
+  <CTASection />
+</PageLayout>

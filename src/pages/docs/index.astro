@@ -1,0 +1,74 @@
+---
+// src/pages/docs/index.astro — Documentation landing page (light theme)
+// Not linked from the nav until real content exists (REDESIGN_PLAN Phase 0).
+import PageLayout from '@layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allDocs = await getCollection('docs', ({ data }) => !data.draft);
+
+const sections = [
+  'Getting Started',
+  'Installation',
+  'Platform Overview',
+  'Devices & Sensors',
+  'Alerts & Notifications',
+  'Intelligence & ML',
+  'Integrations',
+  'API Reference',
+  'Administration',
+  'Troubleshooting',
+] as const;
+
+const grouped = sections.reduce((acc, section) => {
+  acc[section] = allDocs
+    .filter(d => d.data.section === section)
+    .sort((a, b) => a.data.order - b.data.order);
+  return acc;
+}, {} as Record<string, typeof allDocs>);
+---
+
+<PageLayout
+  title="Documentation"
+  description="FurnaceWatch documentation — installation guides, platform overview, and troubleshooting for HVAC service companies."
+  noIndex={allDocs.length === 0}
+>
+  <!-- Hero -->
+  <section class="section-sm bg-navy-50 border-b border-navy-200">
+    <div class="container-fw space-y-4 max-w-3xl">
+      <span class="section-eyebrow">Documentation</span>
+      <h1 class="section-title text-4xl">Guides for your team.</h1>
+    </div>
+  </section>
+
+  <!-- Docs grid -->
+  <section class="section bg-white">
+    <div class="container-fw">
+      {allDocs.length === 0
+        ? <div class="text-center py-16 space-y-4">
+            <p class="text-navy-500">The install guide and platform documentation are being written alongside our design-partner program.</p>
+            <p class="text-navy-500">Need something now? <a href="/contact">Ask us directly</a> — you'll get an answer from the person who built it.</p>
+          </div>
+        : <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {sections.filter(s => grouped[s]?.length > 0).map(section => (
+              <div class="space-y-4">
+                <h2 class="text-sm font-semibold text-navy-900 uppercase tracking-widest">{section}</h2>
+                <ul class="space-y-2">
+                  {grouped[section].map(doc => (
+                    <li>
+                      <a href={`/docs/${doc.slug}`} class="flex items-center gap-2 text-sm text-navy-500 hover:text-navy-900 transition-colors group no-underline">
+                        <svg class="w-4 h-4 text-heat-600/70 group-hover:text-heat-600 transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        {doc.data.title}
+                        {doc.data.badge && <span class="badge-heat text-[10px] px-2">{doc.data.badge}</span>}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+      }
+    </div>
+  </section>
+</PageLayout>
