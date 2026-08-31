@@ -1,0 +1,74 @@
+---
+title: "Gas Furnace Sequence of Operation — From the Outside"
+description: "The full sequence of operation for a gas furnace — heat call, inducer, pressure switch, ignition, flame proving, blower — and what each step looks like from outside the cabinet."
+publishDate: 2026-08-31
+author: "FurnaceWatch Team"
+category: "HVAC Industry"
+tags: ["sequence-of-operation", "gas-furnace", "diagnostics"]
+featured: false
+draft: false
+---
+
+Every gas furnace runs the same play, every cycle, in the same order. Techs learn the
+sequence of operation early because it's the backbone of diagnosis: find the step where
+the sequence stopped, and you've found the neighborhood of the fault.
+
+What's less discussed is that most of the sequence is observable from *outside* the
+cabinet — each step has a mechanical signature. That's worth walking through, because
+it's how a dispatcher can know where a cycle died before anyone opens a panel.
+
+## The sequence, step by step
+
+**1. The heat call.** The thermostat closes the circuit between R and W. Nothing moves
+yet — but this is the moment the furnace is *asked* to do something, and everything
+after is the furnace answering. If you're watching the W wire, you have a timestamp.
+
+**2. Inducer prepurge.** The control board starts the draft inducer to clear the heat
+exchanger and establish combustion airflow. From outside: a small motor spins up and
+runs alone for a short purge. This is usually the first mechanical evidence that the
+furnace heard the call.
+
+**3. Pressure switch proves the draft.** The inducer's draft pulls in a pressure switch,
+telling the board it's safe to ignite. Nothing audible changes — but if the switch never
+proves (blocked vent, failed switch, weak inducer), the sequence stalls right here: an
+inducer running with nothing following it. That stall pattern is itself a diagnosis.
+
+**4. Ignition.** Depending on the furnace: a hot-surface igniter warms up, or a spark
+igniter fires. Then the gas valve opens.
+
+**5. Flame proving.** The flame sensor must confirm flame within a short proving window,
+or the board closes the gas valve and retries. This is the step behind one of the most
+common no-heat patterns in the field: the flame *lights* — combustion is briefly there —
+then drops out seconds later because a dirty or failed sensor never proved it. The board
+retries a few times, then locks out. From outside, that reads as an unmistakable rhythm:
+flame on, flame gone, again and again, then silence.
+
+**6. Blower on.** After a heat-exchanger warm-up delay, the circulating blower starts —
+the biggest mechanical event of the cycle, and the moment the house actually starts
+getting heat.
+
+**7. Steady run, then shutdown.** The call satisfies, the gas valve closes, the inducer
+post-purges, and the blower runs off the remaining heat.
+
+## Reading a failure as a missing step
+
+Flip the sequence around and it becomes a diagnostic checklist:
+
+- **Heat call with nothing after it** — the furnace never answered. Board, power, or
+  safety chain.
+- **Inducer runs, nothing follows** — the draft never proved. Pressure switch, venting,
+  or a rollout/limit holding the sequence.
+- **Inducer runs, no flame ever appears** — ignition failed. Most often the igniter.
+- **Flame appears, drops within seconds, retries, lockout** — flame proving failed.
+  Usually the flame sensor.
+- **Cycle completes but repeats constantly** — short cycling. Airflow, limit, or
+  oversizing territory.
+
+Notice what makes this list work: you don't need to see inside the control board. The
+*order and timing of observable events* — heat call, inducer, flame, blower — carries
+the diagnosis.
+
+That's the idea FurnaceWatch is built on. A sensor on the cabinet follows exactly this
+sequence on every cycle, and when a cycle stops at one of these steps, your office gets
+the failure by name — before the customer calls. If you run a service company and want
+to see what that looks like on a real fleet, [book a demo](/demo).

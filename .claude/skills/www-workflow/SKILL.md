@@ -6,7 +6,8 @@ description: Use when changing anything in furnacewatch_www or about www.furnace
 # FurnaceWatch marketing site — how we work
 
 Full context: `docs/REDESIGN_PLAN.md` (audit + decisions), `docs/BRAND_COPY.md` v2
-(copy ground truth), `README.md` (repo map). This skill is the operational summary.
+(copy ground truth), `docs/SEO.md` (keyword map, content calendar, founder checklist),
+`README.md` (repo map). This skill is the operational summary.
 
 ## Release flow (live since 2026-08-31)
 
@@ -75,6 +76,13 @@ Full context: `docs/REDESIGN_PLAN.md` (audit + decisions), `docs/BRAND_COPY.md` 
 
 - S3 `furnacewatch-www-331411055902` · CloudFront `E1N85VE6H30GSV` (aliases www + apex)
   · deploy role `furnacewatch-www-github-deploy` (GitHub OIDC, scoped to those two).
+- The CloudFront function `furnacewatch-dev-www-uri-rewrite` (viewer-request on the
+  default behavior) does **both** the pretty-URL rewrite and the apex→www 301 — a
+  behavior holds only ONE viewer-request function, so never replace it with a
+  single-purpose one. To change it: `update-function` (DEVELOPMENT), `test-function`
+  the three cases (apex 301, www pretty-URL, www asset untouched), then
+  `publish-function`. New-page SEO: unique keyword title ≤60 chars + description ≤160;
+  blog posts target ONE query each (map in `docs/SEO.md`) and must pass the claims lint.
 - Emergency manual deploy **only if GitHub Actions itself is down** (then fix CI):
   three-pass sync — `*.html` with `max-age=0,no-cache --delete`; `assets/*` with
   `max-age=31536000,immutable`; everything else `max-age=3600` — then invalidate `/*`.

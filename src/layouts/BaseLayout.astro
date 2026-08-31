@@ -26,7 +26,7 @@ const {
 const siteUrl    = import.meta.env.SITE_URL || 'https://www.furnacewatch.io';
 const appUrl     = import.meta.env.PUBLIC_APP_URL || 'https://app.furnacewatch.io';
 const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || '';
-const fullTitle  = title === 'FurnaceWatch' ? title : `${title} — FurnaceWatch`;
+const fullTitle  = title.includes('FurnaceWatch') ? title : `${title} — FurnaceWatch`;
 const canonicalUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
 const fullOgImage  = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 ---
@@ -71,21 +71,33 @@ const fullOgImage  = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage
     <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-    <!-- ── JSON-LD Organization ── -->
+    <!-- ── JSON-LD (Organization + WebSite) ── -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "FurnaceWatch",
-      "url": siteUrl,
-      "logo": `${siteUrl}/images/logo.svg`,
-      "description": "Remote furnace diagnostics for HVAC service companies",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "email": "info@furnacewatch.io"
-      },
-      "sameAs": [
-        "https://linkedin.com/company/furnacewatch"
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": `${siteUrl}/#organization`,
+          "name": "FurnaceWatch",
+          "url": siteUrl,
+          "logo": `${siteUrl}/images/logo.svg`,
+          "description": "Remote furnace diagnostics for HVAC service companies",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "email": "info@furnacewatch.io"
+          },
+          "sameAs": [
+            "https://linkedin.com/company/furnacewatch"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": `${siteUrl}/#website`,
+          "name": "FurnaceWatch",
+          "url": siteUrl,
+          "publisher": { "@id": `${siteUrl}/#organization` }
+        }
       ]
     })} />
 

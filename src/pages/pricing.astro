@@ -33,9 +33,20 @@ const faqs = [
 ---
 
 <PageLayout
-  title="Pricing"
-  description="FurnaceWatch is priced per monitored furnace per month, sensor included. Early design partners lock in launch pricing."
+  title="Furnace Monitoring Pricing"
+  description="FurnaceWatch pricing: one number per monitored furnace per month, sensor included, no per-user fees. Early design partners lock in launch pricing."
 >
+  <!-- FAQ structured data (mirrors the FAQ section below) -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  })} />
+
   <!-- Hero -->
   <section class="section-sm bg-navy-50 border-b border-navy-200">
     <div class="container-fw text-center space-y-4 max-w-3xl mx-auto">
