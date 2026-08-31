@@ -29,22 +29,26 @@ export const failureModes: FailureMode[] = [
   {
     name: 'Igniter failure',
     severity: 'critical',
-    summary: 'The ignition sequence ran and the burner did not light.',
-    alert: 'Ignition sequence ran, burner did not light — three attempts, no flame.',
-    dispatch: 'The tech rolls with a compatible igniter on the truck instead of finding out in the basement.',
+    summary: 'The ignition sequence started — the inducer ran — but no flame was ever detected.',
+    // Wording rule (BRAND_COPY §4): we observe the inducer and the flame, not the
+    // control board — so no attempt counts, and no claim that the full sequence "ran".
+    alert: 'Heat call at 6:05 AM: inducer ran its start sequence, no flame detected.',
+    dispatch: 'Flame never established — most often the igniter. The tech rolls with a compatible igniter and the timeline of what did and didn’t run.',
   },
   {
     name: 'Flame sensor failure',
     severity: 'warning',
-    summary: 'The burner lit and dropped out early, cycle after cycle.',
-    alert: 'Burner lit and dropped out inside 10 seconds, three cycles in a row.',
-    dispatch: 'Classic dirty or failing flame sensor pattern — usually a quick first-visit fix when you arrive knowing.',
+    summary: 'The flame lit, dropped out within seconds, and the furnace retried until it locked out.',
+    // Distinct, observable signature: each lit period is a detected flame event, so
+    // counting the retries here is legitimate — unlike ignition attempts, which aren't.
+    alert: 'Flame detected and lost within seconds, three tries in a row — furnace has locked out.',
+    dispatch: 'The failed flame-proving pattern: the flame burns but is never sensed, so the control shuts the gas off and retries. Usually a dirty or failed flame sensor — a quick first-visit fix when you arrive knowing.',
   },
   {
     name: 'Pressure switch / rollout trip',
     severity: 'critical',
-    summary: 'The inducer ran and ignition was never attempted.',
-    alert: 'Inducer ran, ignition never attempted — safety circuit is holding the furnace off.',
+    summary: 'The inducer ran, but ignition never followed — a safety is holding the furnace off.',
+    alert: 'Inducer running, no ignition activity detected — a safety appears to be holding the furnace off.',
     dispatch: 'A safety is doing its job. The tech arrives ready to find out why instead of starting from “no heat.”',
   },
   {

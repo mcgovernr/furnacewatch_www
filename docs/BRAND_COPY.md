@@ -89,15 +89,24 @@ signatures for and what the portal can raise today.
 | Site name | Plain-language description |
 |---|---|
 | **Heat call with no ignition** | The thermostat is calling for heat and the furnace has not fired |
-| **Igniter failure** | The ignition sequence ran and the burner did not light |
-| **Flame sensor failure** | The burner lit and dropped out early, cycle after cycle |
-| **Pressure switch / rollout trip** | The inducer ran and ignition was never attempted |
+| **Igniter failure** | The ignition sequence started — the inducer ran — but no flame was ever detected |
+| **Flame sensor failure** | The flame lit, dropped out within seconds, and the furnace retried until it locked out |
+| **Pressure switch / rollout trip** | The inducer ran, but ignition never followed — a safety is holding the furnace off |
 | **Short cycling** | Starting and stopping without completing normal cycles |
 | **Extended run** | A cycle running far past normal length |
 | **Sensor offline** | The sensor stopped reporting — the unit is never silently unwatched |
 
 **Do not list** (not detectable today): gas valve failure, blower motor failure, inducer
 degradation. Revisit when `FMEA.md` gains captured signatures for them.
+
+**Wording rule (2026-08-31):** describe only what the sensor *observes* — the heat call,
+inducer activity and its duration, ignition activity, flame presence and how long it
+lasts, blower activity. Never claim internal control-board states we cannot see: no
+ignition attempt counts ("three attempts"), no "the full sequence ran". The flame-sensor
+pattern is the exception that proves the rule — each lit-then-lost flame period is an
+observed event, so counting *those* retries (and the resulting lockout) is legitimate.
+`src/data/failureModes.ts` in the www repo mirrors this table and is the single source
+for site copy.
 
 ---
 
