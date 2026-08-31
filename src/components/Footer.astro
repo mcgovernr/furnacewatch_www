@@ -4,7 +4,13 @@
 const appUrl = import.meta.env.PUBLIC_APP_URL || 'https://app.furnacewatch.io';
 const currentYear = new Date().getFullYear();
 
-const columns = [
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+const columns: { heading: string; links: FooterLink[] }[] = [
   {
     heading: 'Product',
     links: [

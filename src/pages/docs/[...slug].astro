@@ -1,6 +1,6 @@
 ---
 // src/pages/docs/[...slug].astro — Individual docs page (light theme)
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import PageLayout from '@layouts/PageLayout.astro';
 
@@ -11,6 +11,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
     props: { doc },
   }));
 };
+
+interface Props {
+  doc: CollectionEntry<'docs'>;
+}
 
 const { doc } = Astro.props;
 const { Content } = await doc.render();

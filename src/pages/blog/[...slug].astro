@@ -1,6 +1,6 @@
 ---
 // src/pages/blog/[...slug].astro — Individual blog post page (light theme)
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import PageLayout from '@layouts/PageLayout.astro';
 import CTASection from '@components/CTASection.astro';
@@ -12,6 +12,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
     props: { post },
   }));
 };
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
 
 const { post } = Astro.props;
 const { Content } = await post.render();
