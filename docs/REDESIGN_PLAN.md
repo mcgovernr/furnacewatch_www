@@ -297,10 +297,18 @@ Delete: `StatBar`, `TestimonialCard`, `FeatureCard`, `CTASection` (replace), aud
 > design system v2 (Archivo, self-hosted fonts, mono eyebrows, charcoal bands), and the
 > full v2 IA (`/how-it-works`, `/what-it-catches`, `/for-service-companies`, `/company`,
 > `/demo`) live at www.furnacewatch.io with redirects from the old routes. The homepage
-> follows the signed-off comp (artifact "FurnaceWatch Homepage v2"). Remaining: Phase 4
-> (CI/CD on GitHub Actions; Formspree + Plausible accounts are the user's to create;
-> apex→www 301 needs a CloudFront Function), Phase 5 content, real portal screenshots
-> and a product render to replace the illustrations, and Search Console submission.
+> follows the signed-off comp (artifact "FurnaceWatch Homepage v2").
+>
+> **Phase 4 CI/CD shipped 2026-08-31:** merge to `main` → GitHub Actions (claims lint →
+> typecheck → build → OIDC role `furnacewatch-www-github-deploy` → 3-pass S3 sync →
+> CloudFront invalidation → smoke check); PRs gated by `ci.yml`. First green run verified
+> end-to-end. **Never deploy by hand again.** The content-less docs/team/caseStudies
+> collections were removed (they broke `astro check` on cold checkouts); `/docs` redirects
+> to `/how-it-works` until the install guide lands with a real docs collection.
+>
+> Remaining: branch protection on `main` (GitHub settings — user), Formspree + Plausible
+> accounts (user), apex→www 301 (CloudFront Function), Phase 5 content, real portal
+> screenshots and a product render, Search Console submission.
 
 ### Phase 0 — Stop the bleeding (≈1 day, ship this week)
 - Remove every claim in the §1.2 register; remove testimonials, logos, stats strips.
