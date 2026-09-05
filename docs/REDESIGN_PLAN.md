@@ -306,9 +306,12 @@ Delete: `StatBar`, `TestimonialCard`, `FeatureCard`, `CTASection` (replace), aud
 > collections were removed (they broke `astro check` on cold checkouts); `/docs` redirects
 > to `/how-it-works` until the install guide lands with a real docs collection.
 >
-> Remaining: branch protection on `main` (GitHub settings — user), Formspree + Plausible
-> accounts (user), apex→www 301 (CloudFront Function), Phase 5 content, real portal
-> screenshots and a product render, Search Console submission.
+> **SEO shipped 2026-08-31** (see `docs/SEO.md`): keyword titles/meta, JSON-LD graph,
+> FAQPage on /pricing, first two blog posts, apex→www 301 (folded into the shared
+> CloudFront function), Google verification staged via DNS TXT + meta tag.
+>
+> Remaining work is tracked in the unified backlog:
+> `furnacewatch_repo/docs/BACKLOG.md`, items **FW-34…FW-44**.
 
 ### Phase 0 — Stop the bleeding (≈1 day, ship this week)
 - Remove every claim in the §1.2 register; remove testimonials, logos, stats strips.

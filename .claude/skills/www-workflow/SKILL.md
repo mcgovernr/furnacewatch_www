@@ -89,8 +89,10 @@ Full context: `docs/REDESIGN_PLAN.md` (audit + decisions), `docs/BRAND_COPY.md` 
 
 ## Open items
 
-Branch protection on `main` (user, GitHub settings) · `FORMSPREE_FORM_ID` secret
-(activates the demo form) + `PUBLIC_PLAUSIBLE_DOMAIN` variable · apex→www 301
-(CloudFront Function) · real portal screenshots + product render (two labeled
-illustrations on / and /how-it-works) · Phase 5 content (docs collection returns with
-the install guide).
+Tracked in the unified backlog — `furnacewatch_repo/docs/BACKLOG.md`, **FW-34…FW-44**:
+demo-form activation (Formspree secret) · Plausible · Search Console verify + sitemap
+(token already in Route53 TXT and on-page meta) · branch protection on `main` · real
+portal screenshots + product render · blog cadence per `docs/SEO.md` · install guide
+(docs collection returns with its first page) · field Wi-Fi provisioning and email
+alerts (design-partner blockers, firmware/backend) · consumer site (separate property).
+Done and NOT open: apex→www 301 (lives in the shared CloudFront function).
